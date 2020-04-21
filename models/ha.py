@@ -3,7 +3,7 @@ import numpy as np
 from utils import preprocess_data, evaluation
 
 
-def HA(data, rate=0.5, seq_len=12, pre_len=3, repeat=False, is_continuous=True):
+def ha(data, rate=0.5, seq_len=12, pre_len=3, repeat=False, is_continuous=True):
     train_x, train_y, test_x, test_y = preprocess_data(data, rate, seq_len, pre_len)
 
     result_y = []

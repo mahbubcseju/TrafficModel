@@ -1,2 +1,3 @@
-from .HA import HA
-from .svr import SVR
+from .ha import ha
+from .svr import svr
+from .arima import arima
