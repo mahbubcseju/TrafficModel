@@ -2,7 +2,7 @@ import numpy as np
 
 from statsmodels.tsa.arima_model import ARIMA
 
-from utils import preprocess_data, evaluation
+from utils import preprocess_data_sampling, evaluation
 
 
 def model_output(data, prelen):
@@ -15,14 +15,14 @@ def model_output(data, prelen):
         return [0] * prelen
 
 
-def arima(data, rate=0.5, seq_len=12, pre_len=3, repeat=False, is_continuous=True):
+def arima_sampling(data, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, repeat=False, is_continuous=True):
     data = np.mat(data)
     num_nodes = data.shape[1]
 
     total_test_Y, total_predict_Y = [], []
     for i in range(num_nodes):
         node_data = data[1:, i]
-        a_X, a_Y, t_X, t_Y = preprocess_data(node_data, rate=rate, seq_len=seq_len, pre_len=pre_len)
+        a_X, a_Y, t_X, t_Y = preprocess_data_sampling(node_data, rate=rate, seq_len=seq_len, sampling_rate=sampling_rate, pre_len=pre_len)
 
         t_X = np.array(t_X)
         t_X = np.reshape(t_X, [-1, seq_len])
