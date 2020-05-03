@@ -8,7 +8,7 @@ file = convert_image_to_csv(current_directory, '13-11-19_mirpur', 'mirpurAllRoad
 
 file_for_regression = make_csv_for_regression(
     current_directory,
-    '13-11-19_mirpur.csv',
+    file,
     'IntersectionsWithIncomingOutgoing_Mirpur.csv',
     [4],
     True,

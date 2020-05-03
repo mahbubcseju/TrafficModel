@@ -2,19 +2,34 @@ import numpy as np
 
 import pyramid
 import pmdarima as pm
+import statsmodels.api as sm
 
 from utils.preprocess_data import preprocess_data, evaluation
 
 
 def model_output(data, prelen):
-    try:
-        sarima_model = pm.auto_arima(data, start_p=1, start_q=1, max_p=8, max_q=8, start_P=0, start_Q=0, max_P=8, max_Q=8,
-                                 m=12, seasonal=True, trace=True, d=1, D=1, error_action='warn', suppress_warnings=True,
-                                 random_state=20, n_fits=30)
-        predictions = sarima_model.predict(n_periods=prelen)
-        return predictions
-    except Exception:
+    if sum(data) == 0:
         return [0] * prelen
+    try:
+        data = np.array(data, dtype=np.float)
+        data_log = np.log(data)
+        where_is_inf = np.isinf(data_log)
+        data_log[where_is_inf] = 0
+        sarima_model = pm.auto_arima(data_log, start_p=1, start_q=1, max_p=8, max_q=8, start_P=0, start_Q=0, max_P=8, max_Q=8,
+                                 m=4, seasonal=True, trace=True, d=1, D=1, error_action='ignore', suppress_warnings=True,
+                                 random_state=20, n_fits=30)
+        # model = sm.tsa.statespace.SARIMAX(data, order=(1, 1, 1), seasonal_order=(1, 1, 1, 6))
+        # print('lol')
+        predictions = sarima_model.predict(n_periods=prelen)
+        output = np.exp(predictions)
+        # result = model.fit(disp=False)
+        # predictions = result.get_forecast(steps=prelen)
+        print(data, output)
+        return output
+    except Exception as e:
+        print(str(e))
+        return [0] * prelen
+
 
 def sarima(data, rate=0.5, seq_len=12, pre_len=3, repeat=False, is_continuous=True):
     data = np.mat(data)

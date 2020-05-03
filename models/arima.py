@@ -7,11 +7,16 @@ from utils import preprocess_data, evaluation
 
 def model_output(data, prelen):
     try:
-        model = ARIMA(data, order=[1, 0, 0])
+        data = np.array(data, dtype=np.float)
+        data_log = np.log(data)
+        where_is_inf = np.isinf(data_log)
+        data_log[where_is_inf] = 0
+        model = ARIMA(data_log, order=[1, 0, 0])
         trained_model = model.fit(disp=-1)
-        output = trained_model.forecast(prelen)[0]
-        return output
-    except Exception:
+        output_log = trained_model.forecast(prelen)[0]
+        output_log = np.exp(output_log)
+        return output_log
+    except Exception as e:
         return [0] * prelen
 
 
