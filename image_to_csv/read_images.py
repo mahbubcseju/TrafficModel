@@ -37,7 +37,7 @@ def create_file_list(_range):
         for each_hour in range(6, 24):
             for each_minute in range(60):
                 for seconds in (1, 31):
-                    cur_file_name = '{} {:02d}_{:02d}_{:02d}_AM.png'.format(cur_date, each_hour, each_minute, seconds)
+                    cur_file_name = '{} {:02d}_{:02d}_{:02d}.png'.format(cur_date, each_hour, each_minute, seconds)
                     file_list.append(cur_file_name)
 
     return file_list
