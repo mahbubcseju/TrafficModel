@@ -7,10 +7,10 @@ from sklearn.metrics import mean_squared_error,mean_absolute_error
 
 def preprocess_data(data, rate, seq_len=12, pre_len=3):
     np_data = np.array(data)
-    time_len = np_data.shape[0] - 1
+    time_len = np_data.shape[0]
 
     data_x, data_y = [], []
-    for i in range(1, time_len - seq_len - pre_len):
+    for i in range(0, time_len - seq_len - pre_len):
         data_x.append(np_data[i:i+seq_len])
         data_y.append(np_data[i+seq_len:i+seq_len+pre_len])
 

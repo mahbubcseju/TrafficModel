@@ -26,7 +26,7 @@ def arima(data, rate=0.5, seq_len=12, pre_len=3, repeat=False, is_continuous=Tru
 
     total_test_Y, total_predict_Y = [], []
     for i in range(num_nodes):
-        node_data = data[1:, i]
+        node_data = data[:, i]
         a_X, a_Y, t_X, t_Y = preprocess_data(node_data, rate=rate, seq_len=seq_len, pre_len=pre_len)
 
         t_X = np.array(t_X)

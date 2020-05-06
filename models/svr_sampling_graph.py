@@ -2,19 +2,24 @@ import numpy as np
 
 from sklearn.svm import LinearSVR
 
-from utils import preprocess_data, evaluation
+from utils import preprocess_data_sampling_graph, evaluation
 
 
-def svr(data, rate=0.5, seq_len=12, pre_len=3, repeat=False, is_continuous=True):
+def svr_sampling_graph(data, adjacency_matrix, rate=0.5, seq_len=12, sampling_rate=1, pre_len=3, repeat=False, is_continuous=True):
+    adjacency_matrix = np.array(adjacency_matrix)
     data = np.mat(data)
     num_nodes = data.shape[1]
 
     total_test_Y, total_predict_Y = [], []
     for i in range(num_nodes):
-        node_data = data[:, i]
-        a_X, a_Y, t_X, t_Y = preprocess_data(node_data, rate=rate, seq_len=seq_len, pre_len=pre_len)
+        adjacent = [j for j in range(adjacency_matrix[i].size) if adjacency_matrix[i][j]]
+        adjacent.append(i)
+        total_adjacent = len(adjacent)
+
+        node_data = data[:, adjacent]
+        a_X, a_Y, t_X, t_Y = preprocess_data_sampling_graph(node_data, rate=rate, seq_len=seq_len, sampling_rate=sampling_rate, pre_len=pre_len)
         a_X = np.array(a_X)
-        a_X = np.reshape(a_X, [-1, seq_len])
+        a_X = np.reshape(a_X, [-1, seq_len * total_adjacent])
         a_Y = np.array(a_Y)
         a_Y = a_Y[:, 0]
         a_Y = a_Y.flatten()
@@ -23,9 +28,11 @@ def svr(data, rate=0.5, seq_len=12, pre_len=3, repeat=False, is_continuous=True)
         model = model.fit(a_X, a_Y)
 
         t_X = np.array(t_X)
-        t_X = np.reshape(t_X, [-1, seq_len])
+        t_X = np.reshape(t_X, [-1, seq_len * total_adjacent])
         t_Y = np.array(t_Y)
         t_Y = np.reshape(t_Y, [-1, pre_len])
+        # print(a_X.shape + t_X.shape)
+        # break;
 
         result_y = []
         for i in range(len(t_X)):
