@@ -25,7 +25,25 @@ def color_value(colors):
         return 'Default'
 
 
-def read_images(path, co_ordinates):
+def create_file_list(_range):
+    st_date = _range['start_date']
+    en_date = _range['end_date']
+    st_sp = st_date.split('_')
+    en_sp = en_date.split('_')
+
+    file_list = []
+    for each_day in range(int(st_sp[0]), int(en_sp[0]) + 1):
+        cur_date = '{:02d}_{}_{}'.format(each_day, st_sp[1], st_sp[2])
+        for each_hour in range(6, 24):
+            for each_minute in range(60):
+                for seconds in (1, 31):
+                    cur_file_name = '{} {:02d}_{:02d}_{:02d}_AM.png'.format(cur_date, each_hour, each_minute, seconds)
+                    file_list.append(cur_file_name)
+
+    return file_list
+
+
+def read_images(path, _range, co_ordinates):
     total_image = 0
     rows = []
     for i in range(len(co_ordinates)):
@@ -35,18 +53,23 @@ def read_images(path, co_ordinates):
             else:
                 rows.append([' '.join([str(j) for j in col])])
 
-    for file in sorted(listdir(path)):
-        if not isfile(join(path, file)) or file.split('.')[1] != 'png':
+    file_list = create_file_list(_range)
+    for fil in file_list:
+        if not isfile(join(path, fil)) or fil.split('.')[1] != 'png':
             continue
         total_image += 1
-        image = imread(join(path, file))
+        try:
+            image = imread(join(path, fil))
+        except Exception as e:
+            print('missing file', str(e))
 
         co = 0
         for i in range(len(co_ordinates)):
             for col in co_ordinates[i]:
                 if len(col) == 1:
-                    rows[co].append(str(file.split('.')[0]))
+                    rows[co].append(str(fil.split('.')[0]))
                 else:
                     rows[co].append(color_map[color_value(image[col[0]][col[1]][:3])])
                 co += 1
+    print(total_image)
     return rows
