@@ -10,28 +10,35 @@ from models import (
     ha_sampling,
     svr_sampling,
     svr_sampling_graph,
-    sarima,
 )
 
 current_directory = os.getcwd()
 
-data_set = '13-11-19_mirpurin_out.csv'
+data_set = 'novemberin_out.csv'
 
 data_path = os.path.join(current_directory, 'csvs', data_set)
 data = pd.read_csv(data_path, index_col=0).T
+
 
 
 # start_index = '13_11_2019 06_00_01_AM'
 # end_index = '13_11_2019 08_01_31_AM'
 # data = data.loc[start_index: end_index]
 
+sampling_rate = 2
+seq_len = 120
+pre_len = 5
+repeat= True
+is_continuous = False
+
+
 # ha(data, pre_len=1, repeat=False, is_continuous=True)
-# # ha_sampling(data, repeat=False, is_continuous=True, sampling_rate=3)
+#ha_sampling(data, seq_len=seq_len, pre_len=pre_len, repeat=repeat, is_continuous=is_continuous, sampling_rate=sampling_rate)
 #
-svr(data, pre_len=1, repeat=False, is_continuous=True)
+#svr_sampling(data, seq_len=seq_len, pre_len=pre_len, repeat=repeat, is_continuous=is_continuous, sampling_rate=sampling_rate)
 
 # arima(data, pre_len=3, repeat=False, is_continuous=True)
-# arima_sampling(data, repeat=False, is_continuous=True, sampling_rate=3)
+#arima_sampling(data, seq_len=60, pre_len=5, repeat=False, is_continuous=False, sampling_rate=2)
 #
 # sarima(data, rate=0.5, seq_len=12, pre_len=3, repeat=False, is_continuous=True)
 
@@ -44,4 +51,6 @@ intersection_name_from_data = list(data.columns.values)
 
 print(all(intersection_name_from_adj == intersection_name_from_data))
 
-svr_sampling_graph(data, adjacency_matrix)
+#svr_sampling_graph(data, adjacency_matrix, seq_len=seq_len, pre_len=pre_len, repeat=repeat, is_continuous=is_continuous, sampling_rate=sampling_rate)
+
+arima_sampling(data, seq_len=seq_len, pre_len=pre_len, repeat=repeat, is_continuous=is_continuous, sampling_rate=sampling_rate)

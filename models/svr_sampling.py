@@ -1,9 +1,11 @@
 import numpy as np
 
-from sklearn.svm import LinearSVR
+from sklearn.svm import SVR
 
 from utils import preprocess_data_sampling, evaluation
-
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import SGDRegressor
 
 def svr_sampling(data, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, repeat=False, is_continuous=True):
     data = np.mat(data)
@@ -19,7 +21,10 @@ def svr_sampling(data, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, repeat=
         a_Y = a_Y[:, 0]
         a_Y = a_Y.flatten()
 
-        model = LinearSVR()
+        model = SVR(kernel='rbf')
+        # model = make_pipeline(StandardScaler(), SVR(kernel='rbf'))
+        # model = make_pipeline(StandardScaler(), SGDRegressor(max_iter=1000, tol=1e-3))
+
         model = model.fit(a_X, a_Y)
 
         t_X = np.array(t_X)

@@ -11,7 +11,7 @@ def model_output(data, prelen):
         data_log = np.log(data)
         where_is_inf = np.isinf(data_log)
         data_log[where_is_inf] = 0
-        model = ARIMA(data_log, order=[1, 0, 0])
+        model = ARIMA(data_log, order=[2, 1, 3])
         trained_model = model.fit(disp=-1)
         output_log = trained_model.forecast(prelen)[0]
         output_log = np.exp(output_log)

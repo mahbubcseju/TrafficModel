@@ -12,8 +12,11 @@ def ha_sampling(data, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, repeat=F
 
         if repeat:
             a_mean = np.mean(a, axis=0)
-            a1 = a_mean.repeat(pre_len, axis=0)
-            result_y.append(a1)
+            # a1 = a_mean.repeat(pre_len, axis=1)
+            temp_result = []
+            for i in range(pre_len):
+                temp_result.append(a_mean)
+            result_y.append(np.array(temp_result))
         else:
             temp_result = []
             for nxt in range(pre_len):
@@ -21,6 +24,7 @@ def ha_sampling(data, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, repeat=F
                 temp_result.append(a_mean)
                 a = np.append(a, [a_mean], axis=0)
                 a = a[1:]
+
             result_y.append(np.array(temp_result))
 
     if not is_continuous:
@@ -34,6 +38,7 @@ def ha_sampling(data, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, repeat=F
 
     test_y1 = np.array(test_y)
     result_y1 = np.array(result_y)
+    print(test_y1.shape, result_y1.shape)
     num_nodes = test_y1.shape[-1]
     result1 = np.reshape(result_y1, [-1, num_nodes])
     test1 = np.reshape(test_y1, [-1, num_nodes])

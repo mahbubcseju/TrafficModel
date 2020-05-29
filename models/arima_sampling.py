@@ -7,7 +7,7 @@ from utils import preprocess_data_sampling, evaluation
 
 def model_output(data, prelen):
     try:
-        model = ARIMA(data, order=[1, 0, 0])
+        model = ARIMA(data, order=[2, 1, 3])
         trained_model = model.fit(disp=-1)
         output = trained_model.forecast(prelen)[0]
         return output

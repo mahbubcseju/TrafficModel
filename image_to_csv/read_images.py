@@ -1,3 +1,4 @@
+import numpy as np
 from os import listdir
 from os.path import isfile, join
 
@@ -10,6 +11,7 @@ color_map = {
     'Dark Red': 4,
     'Default': 0,
 }
+
 
 def color_value(colors):
     r, g, b = map(int, colors)
@@ -54,14 +56,13 @@ def read_images(path, _range, co_ordinates):
                 rows.append([' '.join([str(j) for j in col])])
 
     file_list = create_file_list(_range)
+
     for fil in file_list:
-        if not isfile(join(path, fil)) or fil.split('.')[1] != 'png':
-            continue
         total_image += 1
         try:
             image = imread(join(path, fil))
         except Exception as e:
-            print('missing file', str(e))
+            image = np.array([[[0] * 4 for j in range(1600)] for i in range(1200)])
 
         co = 0
         for i in range(len(co_ordinates)):
@@ -71,5 +72,7 @@ def read_images(path, _range, co_ordinates):
                 else:
                     rows[co].append(color_map[color_value(image[col[0]][col[1]][:3])])
                 co += 1
+        if total_image % 100 == 0:
+            print('Total Image', total_image)
     print(total_image)
     return rows

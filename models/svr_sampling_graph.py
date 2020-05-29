@@ -1,6 +1,6 @@
 import numpy as np
 
-from sklearn.svm import LinearSVR
+from sklearn.svm import LinearSVR, SVR
 
 from utils import preprocess_data_sampling_graph, evaluation
 
@@ -24,7 +24,7 @@ def svr_sampling_graph(data, adjacency_matrix, rate=0.5, seq_len=12, sampling_ra
         a_Y = a_Y[:, 0]
         a_Y = a_Y.flatten()
 
-        model = LinearSVR()
+        model = SVR(kernel='rbf')
         model = model.fit(a_X, a_Y)
 
         t_X = np.array(t_X)
@@ -65,8 +65,8 @@ def svr_sampling_graph(data, adjacency_matrix, rate=0.5, seq_len=12, sampling_ra
     test1 = np.reshape(np.array(total_test_Y), [num_nodes, -1])
     result1 = np.reshape(np.array(total_predict_Y), [num_nodes, -1])
     rmse, mae, accuracy, r2, var = evaluation(test1, result1)
-    print('SVR_rmse:%r'%rmse,
-          'SCR_mae:%r'%mae,
-          'SVR_acc:%r'%accuracy,
-          'SVR_r2:%r'%r2,
-          'SVR_var:%r'%var)
+    print('SVR_graph_rmse:%r'%rmse,
+          'SCR_graph_mae:%r'%mae,
+          'SVR_graph_acc:%r'%accuracy,
+          'SVR_graph_r2:%r'%r2,
+          'SVR_graph_var:%r'%var)
