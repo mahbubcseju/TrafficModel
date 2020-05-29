@@ -6,6 +6,8 @@ from utils import preprocess_data_sampling_graph, evaluation
 
 
 def svr_sampling_graph(data, adjacency_matrix, rate=0.5, seq_len=12, sampling_rate=1, pre_len=3, repeat=False, is_continuous=True):
+    header = list(data.columns.values)
+
     adjacency_matrix = np.array(adjacency_matrix)
     data = np.mat(data)
     num_nodes = data.shape[1]
@@ -64,9 +66,5 @@ def svr_sampling_graph(data, adjacency_matrix, rate=0.5, seq_len=12, sampling_ra
 
     test1 = np.reshape(np.array(total_test_Y), [num_nodes, -1])
     result1 = np.reshape(np.array(total_predict_Y), [num_nodes, -1])
-    rmse, mae, accuracy, r2, var = evaluation(test1, result1)
-    print('SVR_graph_rmse:%r'%rmse,
-          'SCR_graph_mae:%r'%mae,
-          'SVR_graph_acc:%r'%accuracy,
-          'SVR_graph_r2:%r'%r2,
-          'SVR_graph_var:%r'%var)
+
+    return header, test1, result1

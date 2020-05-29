@@ -5,9 +5,9 @@ from statsmodels.tsa.arima_model import ARIMA
 from utils import preprocess_data_sampling, evaluation
 
 
-def model_output(data, prelen):
+def model_output(data, prelen, p, d, q):
     try:
-        model = ARIMA(data, order=[2, 1, 3])
+        model = ARIMA(data, order=[p, d, q])
         trained_model = model.fit(disp=-1)
         output = trained_model.forecast(prelen)[0]
         return output
@@ -15,7 +15,9 @@ def model_output(data, prelen):
         return [0] * prelen
 
 
-def arima_sampling(data, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, repeat=False, is_continuous=True):
+def arima_sampling(data, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, repeat=False, is_continuous=True, p=2, d=1, q=3):
+    header = list(data.columns.values)
+
     data = np.mat(data)
     num_nodes = data.shape[1]
 
@@ -33,11 +35,11 @@ def arima_sampling(data, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, repea
         for i in range(len(t_X)):
             a = np.array(t_X[i])
             if repeat:
-                output = model_output(a, 1)
+                output = model_output(a, 1, p, d, q)
                 temp_result = [output[0] for i in range(pre_len)]
                 result_y.append(temp_result)
             else:
-                temp_result = model_output(a, pre_len)
+                temp_result = model_output(a, pre_len, p, d, q)
                 result_y.append(np.array(temp_result))
 
         if not is_continuous:
@@ -54,9 +56,5 @@ def arima_sampling(data, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, repea
 
     test1 = np.reshape(np.array(total_test_Y), [num_nodes, -1])
     result1 = np.reshape(np.array(total_predict_Y), [num_nodes, -1])
-    rmse, mae, accuracy, r2, var = evaluation(test1, result1)
-    print('ARIMA_rmse:%r' % rmse,
-          'ARIMA_mae:%r' % mae,
-          'ARIMA_acc:%r' % accuracy,
-          'ARIMA_r2:%r' % r2,
-          'ARIMA_var:%r' % var)
+
+    return header, test1, result1

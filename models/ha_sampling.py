@@ -4,6 +4,8 @@ from utils import preprocess_data_sampling, evaluation
 
 
 def ha_sampling(data, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, repeat=False, is_continuous=True):
+    header = list(data.columns.values)
+
     train_x, train_y, test_x, test_y = preprocess_data_sampling(data, rate, seq_len, sampling_rate=sampling_rate, pre_len=pre_len)
 
     result_y = []
@@ -38,14 +40,8 @@ def ha_sampling(data, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, repeat=F
 
     test_y1 = np.array(test_y)
     result_y1 = np.array(result_y)
-    print(test_y1.shape, result_y1.shape)
     num_nodes = test_y1.shape[-1]
-    result1 = np.reshape(result_y1, [-1, num_nodes])
-    test1 = np.reshape(test_y1, [-1, num_nodes])
+    result1 = np.reshape(result_y1, [-1, num_nodes]).T
+    test1 = np.reshape(test_y1, [-1, num_nodes]).T
 
-    rmse, mae, accuracy,r2,var = evaluation(test1, result1)
-    print('HA_rmse:%r'%rmse,
-          'HA_mae:%r'%mae,
-          'HA_acc:%r'%accuracy,
-          'HA_r2:%r'%r2,
-          'HA_var:%r'%var)
+    return header, test1, result1
