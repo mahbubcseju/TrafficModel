@@ -3,6 +3,7 @@ import math
 
 import numpy as np
 from sklearn.metrics import mean_squared_error,mean_absolute_error
+from scipy.stats import pearsonr
 
 
 def preprocess_data(data, rate, seq_len=12, pre_len=3):
