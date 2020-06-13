@@ -58,13 +58,18 @@ def read_images(path, _range, co_ordinates):
     file_list = create_file_list(_range)
 
     em_image = np.array([[[0] * 4 for j in range(1600)] for i in range(1200)])
+    success, fail = 0, 0
     for fil in file_list:
-        print(fil)
         total_image += 1
         try:
             image = imread(join(path, fil))
+            print('Image received ', fil)
+            success += 1
         except Exception as e:
             image = em_image
+            print('Image Failed ', fil)
+            fail += 1
+            
 
         co = 0
         for i in range(len(co_ordinates)):
@@ -76,5 +81,5 @@ def read_images(path, _range, co_ordinates):
                 co += 1
         if total_image % 100 == 0:
             print('Total Image', total_image)
-    print(total_image)
+    print('total Image', total_image, 'Success ', success, 'failed ', fail)
     return rows
