@@ -57,12 +57,14 @@ def read_images(path, _range, co_ordinates):
 
     file_list = create_file_list(_range)
 
+    em_image = np.array([[[0] * 4 for j in range(1600)] for i in range(1200)])
     for fil in file_list:
+        print(fil)
         total_image += 1
         try:
             image = imread(join(path, fil))
         except Exception as e:
-            image = np.array([[[0] * 4 for j in range(1600)] for i in range(1200)])
+            image = em_image
 
         co = 0
         for i in range(len(co_ordinates)):
