@@ -75,7 +75,6 @@ def sort_coordinates(co_ordinates_st_en, co_ordinates):
         end_point = co_ordinates_st_en[road_id][1]
 
         road_coordinates = co_ordinates[road_id][1:]
-
         start_ind = road_coordinates.index(start_point)
         road_coordinates[start_ind] = -1
 
