@@ -17,22 +17,22 @@ from models import (
 from utils import process_per_segment
 
 
-def run_models(train, test, sampling_rate=2, seq_len=60, pre_len=10, repeat=False, is_continuous=False):
+def run_models(base_directory, train, test, sampling_rate=2, seq_len=60, pre_len=10, repeat=False, is_continuous=False):
     # ha(data, pre_len=1, repeat=False, is_continuous=True)
     result = [['', ''],['Node Number', 'Node name']]
 
     train, test = np.array(train).T, np.array(test).T
     ha_header, ha_test, ha_result = ha_sampling(train, test, seq_len=seq_len, pre_len=pre_len, repeat=repeat, is_continuous=is_continuous, sampling_rate=sampling_rate)
-
     for i in range(len(ha_header)):
         result.append([i, ha_header[i]])
     result.append(['Average', ''])
     result = np.array(result)
 
     ha_temp_result = process_per_segment('HA', ha_test, ha_result)
+    print(result, ha_temp_result)
     result = np.concatenate([result, ha_temp_result], axis=1)
 
-    # print('HA Complete')
+    print('HA Complete')
 
     svr_header, svr_test, svr_result = svr_sampling(train, test, seq_len=seq_len, pre_len=pre_len, repeat=repeat, is_continuous=is_continuous, sampling_rate=sampling_rate)
     svr_temp_result = process_per_segment('SVR', svr_test, svr_result)
@@ -79,7 +79,7 @@ def run_models(train, test, sampling_rate=2, seq_len=60, pre_len=10, repeat=Fals
         repeat,
         is_continuous,
     )
-    image_data_csv_file = os.path.join(current_directory, 'csvs', file_name )
+    image_data_csv_file = os.path.join(base_directory, 'csvs', file_name )
 
     with open(image_data_csv_file, 'w') as writer:
         wr = csv.writer(writer)

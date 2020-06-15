@@ -61,7 +61,7 @@ def preprocess_data_sampling_graph(data, rate, seq_len=12, sampling_rate=2, pre_
 
 
 def preprocess_data_config(data, seq_len=12, sampling_rate=2, pre_len=3):
-    np_data = np.array(data)
+    np_data = np.array(data, dtype='float')
     time_len = np_data.shape[0]
 
     data_x, data_y = [], []
@@ -80,7 +80,7 @@ def preprocess_data_config(data, seq_len=12, sampling_rate=2, pre_len=3):
 
 
 def preprocess_data_config_graph(data, seq_len=12, sampling_rate=2, pre_len=3):
-    np_data = np.array(data)
+    np_data = np.array(data, dtype='float')
     time_len = np_data.shape[0]
 
     data_x, data_y = [], []

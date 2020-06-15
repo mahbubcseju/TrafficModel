@@ -103,6 +103,7 @@ is_continuous =  value['is_continous'] if 'is_continous' in value else False
 from run_models import run_models
 
 run_models(
+    current_directory,
     train_data,
     test_data,
     sampling_rate=sampling_rate,
