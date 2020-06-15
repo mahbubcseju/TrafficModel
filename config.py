@@ -3,16 +3,12 @@ config = {
         'set0': {
             'start_date': '04_11_2019',
             'end_date': '04_11_2019',
-            'start_time': '12_00_01',
-            'end_time': '12_00_31',
         },
     },
     'test': {
         'set0': {
-            'start_date': '04_11_2019',
-            'end_date': '04_11_2019',
-            'start_time': '12_00_01',
-            'end_time': '12_00_31',
+            'start_date': '05_11_2019',
+            'end_date': '05_11_2019',
         },
     },
     'intensity_list_to_count': [3, 4],
