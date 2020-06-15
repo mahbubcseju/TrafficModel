@@ -36,6 +36,7 @@ for key in config['train']:
         current_data = data.loc[:, start_time_stamp:end_time_stanp]
         train = pd.concat([train, current_data], axis=1)
 
+print('Successfully read train data')
 
 for key in config['test']:
     value = config['test'][key]
@@ -59,6 +60,9 @@ for key in config['test']:
         flag = True
         current_data = data.loc[:, start_time_stamp:end_time_stanp]
         test = pd.concat([test, current_data], axis=1)
+
+
+print('Successfully read test data')
 
 in_out_data = csv_to_list(
     current_directory,
@@ -84,6 +88,8 @@ test_data = process_data_for_regression(
     is_continuous=is_intensity_continuous,
     ignored_pixel=number_of_ignored_cell,
 )
+
+print('Successfully make in out data')
 
 sampling_rate = value['sampling_rate'] if 'sampling_rate' in value else 2
 seq_len = value['seq_len'] if 'seq_len' in value else  60
