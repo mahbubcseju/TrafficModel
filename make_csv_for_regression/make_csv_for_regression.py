@@ -72,4 +72,5 @@ def make_csv_for_regression(base_directory, road_segments_csv, in_out_csv, conti
         for rows in reader:
             image_info.append(rows)
 
+
     return make_expected_file(roads_info, image_info, continous_list, final_path, is_continuous)

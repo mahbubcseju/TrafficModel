@@ -5,10 +5,13 @@ import pandas as pd
 import numpy as np
 
 from config import config
+from make_csv_for_regression import process_data_for_regression
+from utils.df_to_list import df_to_list, csv_to_list
 
 
 current_directory = os.getcwd()
 train, test = None, None
+
 
 for key in config['train']:
     value = config['train'][key]
@@ -30,10 +33,8 @@ for key in config['train']:
             data = pd.read_csv(data_path, index_col=0, low_memory=False)
 
         flag = True
-        print(start_time_stamp, end_time_stanp)
         current_data = data.loc[:, start_time_stamp:end_time_stanp]
         train = pd.concat([train, current_data], axis=1)
-        print(train)
 
 
 for key in config['test']:
@@ -61,23 +62,28 @@ for key in config['test']:
 
 
 
+in_out_data = csv_to_list(
+    current_directory,
+    'updated_IntersectionsWithIncomingOutgoing_Mirpur.csv'
+)
 
-# import os
-# import csv
-#
-# import pandas as pd
-# import numpy as np
-#
-# current_directory = os.getcwd()
-#
-# data_set = 'november0.csv'
-#
-# data_path = os.path.join(current_directory, 'csvs', data_set)
-# data = pd.read_csv(data_path, index_col=0)
-#
-# start_index = '01_11_2019 06_00_01'
-# end_index = '01_11_2019 06_01_31'
-# data = data.loc[:, start_index: end_index]
-# print(data.columns.values)
-# print(data.index)
-# print(data)
+intensity_list_to_count = value['intensity_list_to_count'] if 'intensity_list_to_count' in value else [4]
+is_intensity_continuous = value['is_intensity_continuous'] if 'is_intensity_continuous' in value else True
+number_of_ignored_cell = value['number_of_ignored_cell'] if 'number_of_ignored_cell' in value else 1
+
+train_data = process_data_for_regression(
+    df_to_list(train),
+    in_out_data,
+    continous_list=intensity_list_to_count,
+    is_continuous=is_intensity_continuous,
+    ignored_pixel=number_of_ignored_cell,
+)
+
+test_data = process_data_for_regression(
+    df_to_list(test),
+    in_out_data,
+    continous_list=intensity_list_to_count,
+    is_continuous=is_intensity_continuous,
+    ignored_pixel=number_of_ignored_cell,
+)
+

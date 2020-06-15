@@ -56,13 +56,6 @@ def make_expected_file(roads, images, value, path, is_continuous, ignored_pixel=
     return final
 
 
-def process_data_for_regression(base_directory, road_segments, in_out_csv, continous_list=None, is_continuous=True, ignored_pixel=0):
-    absoulte_in_out_csv = os.path.join(base_directory, 'csvs', in_out_csv)
+def process_data_for_regression(data, in_out, continous_list=None, is_continuous=True, ignored_pixel=0):
 
-    roads_info = []
-    with open(absoulte_in_out_csv, 'r') as csvfile:
-        reader = csv.reader(csvfile)
-        for rows in reader:
-            roads_info.append(rows)
-
-    return make_expected_file(roads_info, road_segments, continous_list, is_continuous, ignored_pixel)
+    return make_expected_file(in_out, data, continous_list, is_continuous, ignored_pixel)
