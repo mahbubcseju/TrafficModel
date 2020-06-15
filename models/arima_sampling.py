@@ -2,7 +2,7 @@ import numpy as np
 
 from statsmodels.tsa.arima_model import ARIMA
 
-from utils import preprocess_data_sampling, evaluation
+from utils import preprocess_data_config, evaluation
 
 
 def model_output(data, prelen, p, d, q):
@@ -15,16 +15,18 @@ def model_output(data, prelen, p, d, q):
         return [0] * prelen
 
 
-def arima_sampling(data, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, repeat=False, is_continuous=True, p=2, d=1, q=3):
-    header = list(data.columns.values)
-
-    data = np.mat(data)
-    num_nodes = data.shape[1]
+def arima_sampling(train, test, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, repeat=False, is_continuous=True, p=2, d=1, q=3):
+    header = train[0][1:]
+    train, test = train[1:, 1:], test[1:, 1:]
+    num_nodes = train.shape[1]
+    num_nodes = train.shape[1]
 
     total_test_Y, total_predict_Y = [], []
     for i in range(num_nodes):
-        node_data = data[:, i]
-        a_X, a_Y, t_X, t_Y = preprocess_data_sampling(node_data, rate=rate, seq_len=seq_len, sampling_rate=sampling_rate, pre_len=pre_len)
+        node_train = train[:, i]
+        node_test = test[:, 1]
+        a_X, a_Y = preprocess_data_config(node_train, seq_len, sampling_rate=sampling_rate, pre_len=pre_len)
+        t_X, t_Y = preprocess_data_config(node_test, seq_len, sampling_rate=sampling_rate, pre_len=pre_len)
 
         t_X = np.array(t_X)
         t_X = np.reshape(t_X, [-1, seq_len])

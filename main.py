@@ -91,5 +91,17 @@ pre_len = value['pre_len'] if 'pre_len' in value else 10
 repeat =  value['repeat'] if 'repeat' in value else False
 is_continuous =  value['is_continous'] if 'is_continous' in value else False
 
+
+from run_models import run_models
+
+run_models(
+    train_data,
+    test_data,
+    sampling_rate=sampling_rate,
+    seq_len=seq_len,
+    pre_len=pre_len,
+    repeat=repeat,
+    is_continuous=is_continuous,
+)
 print(train_data)
 

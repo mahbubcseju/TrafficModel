@@ -1,12 +1,16 @@
 import numpy as np
 
-from utils import preprocess_data_sampling, evaluation
+from utils import (
+    preprocess_data_config,
+    evaluation,
+)
 
 
-def ha_sampling(data, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, repeat=False, is_continuous=True):
-    header = list(data.columns.values)
-
-    train_x, train_y, test_x, test_y = preprocess_data_sampling(data, rate, seq_len, sampling_rate=sampling_rate, pre_len=pre_len)
+def ha_sampling(train, test, seq_len=12, sampling_rate=2, pre_len=3, repeat=False, is_continuous=True):
+    header = train[0][1:]
+    train, test = train[1:, 1:], test[1:, 1:]
+    train_x, train_y = preprocess_data_config(train,  seq_len, sampling_rate=sampling_rate, pre_len=pre_len)
+    test_x, test_y = preprocess_data_config(test, seq_len, sampling_rate=sampling_rate, pre_len=pre_len)
 
     result_y = []
     for i in range(len(test_x)):

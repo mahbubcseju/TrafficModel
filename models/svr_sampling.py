@@ -1,22 +1,24 @@
 import numpy as np
 
 from sklearn.svm import SVR
-
-from utils import preprocess_data_sampling, evaluation
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import SGDRegressor
 
-def svr_sampling(data, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, repeat=False, is_continuous=True):
-    header = list(data.columns.values)
+from utils import preprocess_data_config, evaluation
 
-    data = np.mat(data)
-    num_nodes = data.shape[1]
+
+def svr_sampling(train, test, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, repeat=False, is_continuous=True):
+    header = train[0][1:]
+    train, test = train[1:, 1:], test[1:, 1:]
+    num_nodes = train.shape[1]
 
     total_test_Y, total_predict_Y = [], []
     for i in range(num_nodes):
-        node_data = data[:, i]
-        a_X, a_Y, t_X, t_Y = preprocess_data_sampling(node_data, rate=rate, seq_len=seq_len, sampling_rate=sampling_rate, pre_len=pre_len)
+        node_train = train[:, i]
+        node_test = test[:, 1]
+        a_X, a_Y = preprocess_data_config(node_train, seq_len, sampling_rate=sampling_rate, pre_len=pre_len)
+        t_X, t_Y = preprocess_data_config(node_test, seq_len, sampling_rate=sampling_rate, pre_len=pre_len)
         a_X = np.array(a_X)
         a_X = np.reshape(a_X, [-1, seq_len])
         a_Y = np.array(a_Y)
