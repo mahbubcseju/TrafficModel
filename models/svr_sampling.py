@@ -10,7 +10,7 @@ from utils import preprocess_data_config, evaluation
 
 def svr_sampling(train, test, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, repeat=False, is_continuous=True):
     header = train[0][1:]
-    train, test = train[1:, 1:], test[1:, 1:]
+    train, test = np.array(train[1:, 1:]).astype(np.float), np.array(test[1:, 1:]).astype(np.float)
     num_nodes = train.shape[1]
 
     total_test_Y, total_predict_Y = [], []

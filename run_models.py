@@ -16,13 +16,6 @@ from models import (
 
 from utils import process_per_segment
 
-current_directory = os.getcwd()
-
-data_set = 'november-2019in_out.csv'
-
-data_path = os.path.join(current_directory, 'csvs', data_set)
-data = pd.read_csv(data_path, index_col=0).T
-
 
 def run_models(train, test, sampling_rate=2, seq_len=60, pre_len=10, repeat=False, is_continuous=False):
     # ha(data, pre_len=1, repeat=False, is_continuous=True)

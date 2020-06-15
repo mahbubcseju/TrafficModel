@@ -8,7 +8,7 @@ from utils import (
 
 def ha_sampling(train, test, seq_len=12, sampling_rate=2, pre_len=3, repeat=False, is_continuous=True):
     header = train[0][1:]
-    train, test = train[1:, 1:], test[1:, 1:]
+    train, test = np.array(train[1:, 1:]).astype(np.float), np.array(test[1:, 1:]).astype(np.float)
     train_x, train_y = preprocess_data_config(train,  seq_len, sampling_rate=sampling_rate, pre_len=pre_len)
     test_x, test_y = preprocess_data_config(test, seq_len, sampling_rate=sampling_rate, pre_len=pre_len)
 
