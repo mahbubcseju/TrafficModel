@@ -2,11 +2,11 @@ import os
 import csv
 
 
-def make_expected_file(roads, images, value, path, is_continuous, ignored_pixel=0):
+def make_expected_file(roads, images, continuous_list=[4], is_continuous=True, ignored_pixel=0):
     final = []
 
     header = ['Intersection']
-    for j in range(1, len(images[0])):
+    for j in range(len(images[0])):
         header.append(images[0][j])
     final.append(header)
 
@@ -18,7 +18,7 @@ def make_expected_file(roads, images, value, path, is_continuous, ignored_pixel=
         road_intersection_index[roads[j][3].replace(' ', '').lower()] = int(roads[j][1])
         if roads[j][1] != roads[j-1][1]:
             final.append([roads[j][2]])
-            for i in range(1, len(images[0])):
+            for i in range(len(images[0])):
                 final[int(roads[j][1])].append(0)
 
     cur_intersection = -1
@@ -37,7 +37,7 @@ def make_expected_file(roads, images, value, path, is_continuous, ignored_pixel=
                         for ind1 in range(ind + 1, len(images)):
                             if len(images[ind1][0]) > 20:
                                 break
-                            if int(images[ind1][j]) in value:
+                            if int(images[ind1][j]) in continuous_list:
                                 cnt += 1
                                 ignore = 0
                             else:
@@ -50,12 +50,10 @@ def make_expected_file(roads, images, value, path, is_continuous, ignored_pixel=
                 cur_intersection = -1
         elif cur_intersection != -1 and not is_continuous:
             for j in range(1, len(row)):
-                if int(row[j]) in value:
+                if int(row[j]) in continuous_list:
                     final[cur_intersection][j] += 1
 
     return final
 
-
 def process_data_for_regression(data, in_out, continous_list=None, is_continuous=True, ignored_pixel=0):
-
     return make_expected_file(in_out, data, continous_list, is_continuous, ignored_pixel)

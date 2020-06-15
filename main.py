@@ -60,8 +60,6 @@ for key in config['test']:
         current_data = data.loc[:, start_time_stamp:end_time_stanp]
         test = pd.concat([test, current_data], axis=1)
 
-
-
 in_out_data = csv_to_list(
     current_directory,
     'updated_IntersectionsWithIncomingOutgoing_Mirpur.csv'
@@ -86,4 +84,12 @@ test_data = process_data_for_regression(
     is_continuous=is_intensity_continuous,
     ignored_pixel=number_of_ignored_cell,
 )
+
+sampling_rate = value['sampling_rate'] if 'sampling_rate' in value else 2
+seq_len = value['seq_len'] if 'seq_len' in value else  60
+pre_len = value['pre_len'] if 'pre_len' in value else 10
+repeat =  value['repeat'] if 'repeat' in value else False
+is_continuous =  value['is_continous'] if 'is_continous' in value else False
+
+print(train_data)
 

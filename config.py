@@ -18,4 +18,9 @@ config = {
     'intensity_list_to_count': [3, 4],
     'is_intensity_continuous': True,
     'number_of_ignored_cell' : 3,
+    'sampling_rate': 2,
+    'seq_len': 60,
+    'pre_len': 10,
+    'repeat': False,
+    'is_continuous': False,
 }
