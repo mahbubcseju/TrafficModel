@@ -17,7 +17,7 @@ def model_output(data, prelen, p, d, q):
 
 def arima_sampling(train, test, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, repeat=False, is_continuous=True, p=2, d=1, q=3):
     header = train[0][1:]
-    train, test = np.array(train[1:, 1:]).astype(np.float), np.array(test[1:, 1:]).astype(np.float)
+    train, test = np.array(train[1:, 1:], dtype='float'), np.array(test[1:, 1:], dtype='float')
     num_nodes = train.shape[1]
     num_nodes = train.shape[1]
 
