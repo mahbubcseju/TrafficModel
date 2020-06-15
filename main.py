@@ -35,6 +35,7 @@ for key in config['train']:
         flag = True
         current_data = data.loc[:, start_time_stamp:end_time_stanp]
         train = pd.concat([train, current_data], axis=1)
+        print('succesffully read train data of day {} '.format(day))
 
 print('Successfully read train data')
 
@@ -60,6 +61,7 @@ for key in config['test']:
         flag = True
         current_data = data.loc[:, start_time_stamp:end_time_stanp]
         test = pd.concat([test, current_data], axis=1)
+        print('succesffully read train data of day {} '.format(day))
 
 
 print('Successfully read test data')
