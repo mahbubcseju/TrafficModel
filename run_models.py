@@ -29,7 +29,6 @@ def run_models(base_directory, train, test, sampling_rate=2, seq_len=60, pre_len
     result = np.array(result)
 
     ha_temp_result = process_per_segment('HA', ha_test, ha_result)
-    print(result, ha_temp_result)
     result = np.concatenate([result, ha_temp_result], axis=1)
 
     print('HA Complete')

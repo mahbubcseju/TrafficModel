@@ -4,14 +4,17 @@ import math
 import numpy as np
 from sklearn.metrics import mean_squared_error,mean_absolute_error
 import pandas as pd
-from scipy.stats import pearsonr
+from scipy.stats.stats import pearsonr
 
 def evaluation(a, b):
-    a = np.array(a, dtype='float')
-    b = np.array(b, dtype='float')
+    a = np.array(a, dtype=np.float)
+    b = np.array(b, dtype=np.float)
     rmse = math.sqrt(mean_squared_error(a,b))
     mae = mean_absolute_error(a, b)
-    return rmse, mae, mae
+    a = a.flatten()
+    b = b.flatten()
+    cor, _ = pearsonr(a, b)
+    return rmse, mae, cor
 
 
 def process_per_segment(whos, test, result):
