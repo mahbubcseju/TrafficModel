@@ -4,10 +4,11 @@ import csv
 import pandas as pd
 import numpy as np
 
-current_directory = os.getcwd()
-
 from config import config
 
+
+current_directory = os.getcwd()
+train, test = None, None
 
 for key in config['train']:
     value = config['train'][key]
@@ -17,19 +18,19 @@ for key in config['train']:
     end_time = value['end_time'] if 'end_time' in value else '23_59_31'
 
     start_day, end_day = int(start_date.split('_')[0]), int(end_date.split('_')[0])
-    data, train, flag = None, None, None
+    data, flag = None,  None
     for day in range(start_day, end_day + 1):
         day_div = (day - 1) // 5
         start_time_stamp = '{:02d}_11_2019 {}'.format(day, start_time)
         end_time_stanp = '{:02d}_11_2019 {}'.format(day, end_time)
 
-        if day % 5 == 0 or not flag:
-            data_set = 'november{}.csv'.format(day // 5)
+        if (day - 1) % 5 == 0 or not flag:
+            data_set = 'november{}.csv'.format(day_div)
             data_path = os.path.join(current_directory, 'csvs', data_set)
             data = pd.read_csv(data_path, index_col=0, low_memory=False)
 
         flag = True
-
+        print(start_time_stamp, end_time_stanp)
         current_data = data.loc[:, start_time_stamp:end_time_stanp]
         train = pd.concat([train, current_data], axis=1)
         print(train)
@@ -43,22 +44,21 @@ for key in config['test']:
     end_time = value['end_time'] if 'end_time' in value else '23_59_31'
 
     start_day, end_day = int(start_date.split('_')[0]), int(end_date.split('_')[0])
-    data, train, flag = None, None, None
+    data, flag = None, None
     for day in range(start_day, end_day + 1):
         day_div = (day - 1) // 5
         start_time_stamp = '{:02d}_11_2019 {}'.format(day, start_time)
         end_time_stanp = '{:02d}_11_2019 {}'.format(day, end_time)
 
-        if day % 5 == 0 or not flag:
-            data_set = 'november{}.csv'.format(day // 5)
+        if (day - 1) % 5 == 0 or not flag:
+            data_set = 'november{}.csv'.format(day_div)
             data_path = os.path.join(current_directory, 'csvs', data_set)
             data = pd.read_csv(data_path, index_col=0, low_memory=False)
 
         flag = True
-
         current_data = data.loc[:, start_time_stamp:end_time_stanp]
-        train = pd.concat([train, current_data], axis=1)
-        print(train)
+        test = pd.concat([test, current_data], axis=1)
+
 
 # import os
 # import csv
