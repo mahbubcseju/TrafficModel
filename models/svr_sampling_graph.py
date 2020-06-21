@@ -13,7 +13,6 @@ def svr_sampling_graph(train, test, adjacency_matrix, rate=0.5, seq_len=12, samp
 
     total_test_Y, total_predict_Y = [], []
     for i in range(num_nodes):
-        print(i, adjacency_matrix)
         adjacent = [j for j in range(adjacency_matrix[i].size) if adjacency_matrix[i][j]]
         adjacent.append(i)
         total_adjacent = len(adjacent)

@@ -105,9 +105,6 @@ for test1 in test_generator():
 
 print('Successfully make in out data')
 
-# print(train)
-# print("LOL")
-# print(test)
 sampling_rate = config['sampling_rate'] if 'sampling_rate' in config else 2
 seq_len = config['seq_len'] if 'seq_len' in config else  60
 pre_len = config['pre_len'] if 'pre_len' in config else 10
