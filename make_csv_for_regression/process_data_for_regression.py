@@ -55,5 +55,6 @@ def make_expected_file(roads, images, continuous_list=[4], is_continuous=True, i
 
     return final
 
+
 def process_data_for_regression(data, in_out, continous_list=None, is_continuous=True, ignored_pixel=0):
     return make_expected_file(in_out, data, continous_list, is_continuous, ignored_pixel)

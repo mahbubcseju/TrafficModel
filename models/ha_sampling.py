@@ -7,10 +7,9 @@ from utils import (
 
 
 def ha_sampling(train, test, seq_len=12, sampling_rate=2, pre_len=3, repeat=False, is_continuous=True):
-    header = train[0][1:]
-    train, test = np.array(train[1:, 1:], dtype='float'), np.array(test[1:, 1:], dtype='float')
-    train_x, train_y = preprocess_data_config(train,  seq_len, sampling_rate=sampling_rate, pre_len=pre_len)
-    test_x, test_y = preprocess_data_config(test, seq_len, sampling_rate=sampling_rate, pre_len=pre_len)
+
+    train_x, train_y, header = preprocess_data_config(train,  seq_len, sampling_rate=sampling_rate, pre_len=pre_len)
+    test_x, test_y, header = preprocess_data_config(test, seq_len, sampling_rate=sampling_rate, pre_len=pre_len)
 
     result_y = []
     for i in range(len(test_x)):
@@ -18,7 +17,6 @@ def ha_sampling(train, test, seq_len=12, sampling_rate=2, pre_len=3, repeat=Fals
 
         if repeat:
             a_mean = np.mean(a, axis=0)
-            # a1 = a_mean.repeat(pre_len, axis=1)
             temp_result = []
             for i in range(pre_len):
                 temp_result.append(a_mean)

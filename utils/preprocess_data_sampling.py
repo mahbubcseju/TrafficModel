@@ -60,38 +60,47 @@ def preprocess_data_sampling_graph(data, rate, seq_len=12, sampling_rate=2, pre_
     return train_x, train_y, test_x, test_y
 
 
-def preprocess_data_config(data, seq_len=12, sampling_rate=2, pre_len=3):
-    np_data = np.array(data, dtype='float')
-    time_len = np_data.shape[0]
-
+def preprocess_data_config(data_set_gen, seq_len=12, sampling_rate=2, pre_len=3):
     data_x, data_y = [], []
-    per_seq_covered_length = (seq_len + pre_len - 1) * (sampling_rate - 1) + seq_len + pre_len
-    for i in range(0, time_len - per_seq_covered_length):
-        data_x.append([np_data[j] for j in range(i, i + seq_len * sampling_rate, sampling_rate)])
-        data_y.append(
-            [
-                np_data[j] for j in range(
-                    i + seq_len * sampling_rate, i + (seq_len + pre_len) * sampling_rate, sampling_rate
-                )
-            ]
-        )
+    header = None
+    for data_gen in data_set_gen:
+        data_ = np.array(data_gen).T
+        print(data_)
+        header = data_[0][1:]
+        np_data = np.array(data_[1:, 1:], dtype='float')
 
-    return data_x, data_y
+        time_len = np_data.shape[0]
+        per_seq_covered_length = (seq_len + pre_len - 1) * (sampling_rate - 1) + seq_len + pre_len
+        for i in range(0, time_len - per_seq_covered_length):
+            data_x.append([np_data[j] for j in range(i, i + seq_len * sampling_rate, sampling_rate)])
+            data_y.append(
+                [
+                    np_data[j] for j in range(
+                        i + seq_len * sampling_rate, i + (seq_len + pre_len) * sampling_rate, sampling_rate
+                    )
+                ]
+            )
+
+    return data_x, data_y, header
 
 
-def preprocess_data_config_graph(data, seq_len=12, sampling_rate=2, pre_len=3):
-    np_data = np.array(data, dtype='float')
-    time_len = np_data.shape[0]
-
+def preprocess_data_config_graph(data_set_gen, seq_len=12, sampling_rate=2, pre_len=3):
     data_x, data_y = [], []
-    per_seq_covered_length = (seq_len + pre_len - 1) * (sampling_rate - 1) + seq_len + pre_len
-    for i in range(0, time_len - per_seq_covered_length):
-        data_x.append([np_data[j] for j in range(i, i + seq_len * sampling_rate, sampling_rate)])
-        data_y.append(
-            [
-                np_data[j][-1] for j in range(
-                    i + seq_len * sampling_rate, i + (seq_len + pre_len) * sampling_rate, sampling_rate
-                )
-            ]
-        )
-    return data_x, data_y
+    header = None
+
+    for data_gen in data_set_gen:
+        header = data_gen[0][1:]
+        np_data = np.array(data_gen[1:, 1:], dtype='float')
+
+        time_len = np_data.shape[0]
+        per_seq_covered_length = (seq_len + pre_len - 1) * (sampling_rate - 1) + seq_len + pre_len
+        for i in range(0, time_len - per_seq_covered_length):
+            data_x.append([np_data[j] for j in range(i, i + seq_len * sampling_rate, sampling_rate)])
+            data_y.append(
+                [
+                    np_data[j][-1] for j in range(
+                        i + seq_len * sampling_rate, i + (seq_len + pre_len) * sampling_rate, sampling_rate
+                    )
+                ]
+            )
+    return data_x, data_y, header

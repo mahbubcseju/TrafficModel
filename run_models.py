@@ -21,7 +21,6 @@ def run_models(base_directory, train, test, sampling_rate=2, seq_len=60, pre_len
     # ha(data, pre_len=1, repeat=False, is_continuous=True)
     result = [['', ''],['Node Number', 'Node name']]
 
-    train, test = np.array(train).T, np.array(test).T
     ha_header, ha_test, ha_result = ha_sampling(train, test, seq_len=seq_len, pre_len=pre_len, repeat=repeat, is_continuous=is_continuous, sampling_rate=sampling_rate)
     for i in range(len(ha_header)):
         result.append([i, ha_header[i]])
@@ -33,9 +32,9 @@ def run_models(base_directory, train, test, sampling_rate=2, seq_len=60, pre_len
 
     print('HA Complete')
 
-    svr_header, svr_test, svr_result = svr_sampling(train, test, seq_len=seq_len, pre_len=pre_len, repeat=repeat, is_continuous=is_continuous, sampling_rate=sampling_rate)
-    svr_temp_result = process_per_segment('SVR', svr_test, svr_result)
-    result = np.concatenate([result, svr_temp_result], axis=1)
+    # svr_header, svr_test, svr_result = svr_sampling(train, test, seq_len=seq_len, pre_len=pre_len, repeat=repeat, is_continuous=is_continuous, sampling_rate=sampling_rate)
+    # svr_temp_result = process_per_segment('SVR', svr_test, svr_result)
+    # result = np.concatenate([result, svr_temp_result], axis=1)
 
     print('SVR Complete')
 
@@ -57,9 +56,9 @@ def run_models(base_directory, train, test, sampling_rate=2, seq_len=60, pre_len
     # svr_graph_temp_result = process_per_segment('SVR GRAPH', svr_graph_test, svr_graph_result)
     # result = np.concatenate([result, svr_graph_temp_result], axis=1)
     # print('SVR GRAPH Complete')
-    arima_header, arima_test, arima_result = arima_sampling(train, test, seq_len=seq_len, pre_len=pre_len, repeat=repeat, is_continuous=is_continuous, sampling_rate=sampling_rate, p=1, d=1, q=1)
-    arima_temp_result = process_per_segment('ARIMA', arima_test, arima_result)
-    result = np.concatenate([result, arima_temp_result], axis=1)
+    # arima_header, arima_test, arima_result = arima_sampling(train, test, seq_len=seq_len, pre_len=pre_len, repeat=repeat, is_continuous=is_continuous, sampling_rate=sampling_rate, p=1, d=1, q=1)
+    # arima_temp_result = process_per_segment('ARIMA', arima_test, arima_result)
+    # result = np.concatenate([result, arima_temp_result], axis=1)
 
 
     final_result = [
