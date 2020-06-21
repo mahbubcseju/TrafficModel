@@ -33,8 +33,6 @@ def svr_sampling_graph(train, test, adjacency_matrix, rate=0.5, seq_len=12, samp
         t_X = np.reshape(t_X, [-1, seq_len * total_adjacent])
         t_Y = np.array(t_Y)
         t_Y = np.reshape(t_Y, [-1, pre_len])
-        # print(a_X.shape + t_X.shape)
-        # break;
 
         result_y = []
         for i in range(len(t_X)):
