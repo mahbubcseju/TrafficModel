@@ -60,12 +60,14 @@ def preprocess_data_sampling_graph(data, rate, seq_len=12, sampling_rate=2, pre_
     return train_x, train_y, test_x, test_y
 
 
+# Return a 3d array
+# Ist dimension: per sequence
+# Second dimension: Number of sequence
+# Third diemsion:  Number of Nodes
 def preprocess_data_config(data_set_gen, seq_len=12, sampling_rate=2, pre_len=3):
     data_x, data_y = [], []
     header = None
-    for data_gen in data_set_gen:
-        data_ = np.array(data_gen).T
-        print(data_)
+    for data_ in data_set_gen:
         header = data_[0][1:]
         np_data = np.array(data_[1:, 1:], dtype='float')
 
@@ -80,8 +82,7 @@ def preprocess_data_config(data_set_gen, seq_len=12, sampling_rate=2, pre_len=3)
                     )
                 ]
             )
-
-    return data_x, data_y, header
+    return np.array(data_x), np.array(data_y), header
 
 
 def preprocess_data_config_graph(data_set_gen, seq_len=12, sampling_rate=2, pre_len=3):

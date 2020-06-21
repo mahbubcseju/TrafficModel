@@ -2,24 +2,24 @@ import numpy as np
 
 from sklearn.svm import LinearSVR, SVR
 
-from utils import preprocess_data_sampling_graph, evaluation
+from utils import preprocess_data_sampling_graph, evaluation, preprocess_data_config
 
 
-def svr_sampling_graph(data, adjacency_matrix, rate=0.5, seq_len=12, sampling_rate=1, pre_len=3, repeat=False, is_continuous=True):
-    header = list(data.columns.values)
-
+def svr_sampling_graph(train, test, adjacency_matrix, rate=0.5, seq_len=12, sampling_rate=1, pre_len=3, repeat=False, is_continuous=True):
+    train_x, train_y, header = preprocess_data_config(train,  seq_len, sampling_rate=sampling_rate, pre_len=pre_len)
+    test_x, test_y, header = preprocess_data_config(test, seq_len, sampling_rate=sampling_rate, pre_len=pre_len)
+    num_nodes = len(header)
     adjacency_matrix = np.array(adjacency_matrix)
-    data = np.mat(data)
-    num_nodes = data.shape[1]
 
     total_test_Y, total_predict_Y = [], []
     for i in range(num_nodes):
+        print(i, adjacency_matrix)
         adjacent = [j for j in range(adjacency_matrix[i].size) if adjacency_matrix[i][j]]
         adjacent.append(i)
         total_adjacent = len(adjacent)
+        a_X, a_Y = train_x[:, :, adjacent], train_y[:, :, [i]]
+        t_X, t_Y = test_x[:, :, adjacent], test_y[:, :, [i]]
 
-        node_data = data[:, adjacent]
-        a_X, a_Y, t_X, t_Y = preprocess_data_sampling_graph(node_data, rate=rate, seq_len=seq_len, sampling_rate=sampling_rate, pre_len=pre_len)
         a_X = np.array(a_X)
         a_X = np.reshape(a_X, [-1, seq_len * total_adjacent])
         a_Y = np.array(a_Y)

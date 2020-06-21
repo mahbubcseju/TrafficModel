@@ -9,16 +9,15 @@ from utils import preprocess_data_config, evaluation
 
 
 def svr_sampling(train, test, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, repeat=False, is_continuous=True):
-    header = train[0][1:]
-    train, test = np.array(train[1:, 1:], dtype='float'), np.array(test[1:, 1:], dtype='float')
-    num_nodes = train.shape[1]
+    train_x, train_y, header = preprocess_data_config(train,  seq_len, sampling_rate=sampling_rate, pre_len=pre_len)
+    test_x, test_y, header = preprocess_data_config(test, seq_len, sampling_rate=sampling_rate, pre_len=pre_len)
+
+    num_nodes = len(header)
 
     total_test_Y, total_predict_Y = [], []
     for i in range(num_nodes):
-        node_train = train[:, i]
-        node_test = test[:, 1]
-        a_X, a_Y = preprocess_data_config(node_train, seq_len, sampling_rate=sampling_rate, pre_len=pre_len)
-        t_X, t_Y = preprocess_data_config(node_test, seq_len, sampling_rate=sampling_rate, pre_len=pre_len)
+        a_X, a_Y = train_x[:, :, i], train_y[:, :, i]
+        t_X, t_Y = test_x[:, :, i], test_y[:, :, i]
         a_X = np.array(a_X)
         a_X = np.reshape(a_X, [-1, seq_len])
         a_Y = np.array(a_Y)

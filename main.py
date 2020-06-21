@@ -36,7 +36,6 @@ def train_generator():
             current_data = data.loc[:, start_time_stamp:end_time_stanp]
             train_cur = pd.concat([train_cur, current_data], axis=1)
             print('succesffully read train data of day {} '.format(day))
-
         yield train_cur
 
 
@@ -77,10 +76,9 @@ in_out_data = csv_to_list(
     'updated_IntersectionsWithIncomingOutgoing_Mirpur.csv'
 )
 
-value = config
-intensity_list_to_count = value['intensity_list_to_count'] if 'intensity_list_to_count' in value else [4]
-is_intensity_continuous = value['is_intensity_continuous'] if 'is_intensity_continuous' in value else True
-number_of_ignored_cell = value['number_of_ignored_cell'] if 'number_of_ignored_cell' in value else 1
+intensity_list_to_count = config['intensity_list_to_count'] if 'intensity_list_to_count' in config else [4]
+is_intensity_continuous = config['is_intensity_continuous'] if 'is_intensity_continuous' in config else True
+number_of_ignored_cell = config['number_of_ignored_cell'] if 'number_of_ignored_cell' in config else 1
 
 
 train, test = [], []
@@ -107,14 +105,14 @@ for test1 in test_generator():
 
 print('Successfully make in out data')
 
-print(train)
-print("LOL")
-print(test)
-sampling_rate = value['sampling_rate'] if 'sampling_rate' in value else 2
-seq_len = value['seq_len'] if 'seq_len' in value else  60
-pre_len = value['pre_len'] if 'pre_len' in value else 10
-repeat =  value['repeat'] if 'repeat' in value else False
-is_continuous =  value['is_continous'] if 'is_continous' in value else False
+# print(train)
+# print("LOL")
+# print(test)
+sampling_rate = config['sampling_rate'] if 'sampling_rate' in config else 2
+seq_len = config['seq_len'] if 'seq_len' in config else  60
+pre_len = config['pre_len'] if 'pre_len' in config else 10
+repeat = config['repeat'] if 'repeat' in config else False
+is_continuous = config['is_continous'] if 'is_continous' in config else False
 
 
 from run_models import run_models

@@ -1,24 +1,18 @@
 config = {
     'train': {
         'set0': {
-            'start_date': '04_11_2019',
-            'end_date': '04_11_2019',
-            'start_time': '09_01_01',
-            'end_time': '11_20_31',
-        },
-        'set1': {
-            'start_date': '04_11_2019',
-            'end_date': '04_11_2019',
-            'start_time': '09_12_01',
-            'end_time': '11_20_31',
+            'start_date': '01_11_2019',
+            'end_date': '01_11_2019',
+            'start_time': '12_33_31',
+            'end_time': '13_31_31',
         },
     },
     'test': {
         'set0': {
-            'start_date': '04_11_2019',
-            'end_date': '04_11_2019',
-            'start_time': '09_01_01',
-            'end_time': '11_20_31',
+            'start_date': '01_11_2019',
+            'end_date': '01_11_2019',
+            'start_time': '12_34_01',
+            'end_time': '13_31_01',
         }
     },
     'intensity_list_to_count': [3, 4],
