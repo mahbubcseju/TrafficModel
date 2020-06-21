@@ -65,7 +65,7 @@ def test_generator():
             flag = True
             current_data = data.loc[:, start_time_stamp:end_time_stanp]
             test_cur = pd.concat([test_cur, current_data], axis=1)
-            print('succesffully read train data of day {} '.format(day))
+            print('succesffully read test data of day {} '.format(day))
         yield test_cur
 
 
