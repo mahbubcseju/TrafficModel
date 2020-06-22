@@ -34,9 +34,9 @@ def train_generator():
 
             flag = True
             current_data = data.loc[:, start_time_stamp:end_time_stanp]
-            train_cur = pd.concat([train_cur, current_data], axis=1)
+            # train_cur = pd.concat([train_cur, current_data], axis=1)
             print('succesffully read train data of day {} '.format(day))
-        yield train_cur
+            yield current_data
 
 
 print('Successfully read train data')
@@ -64,9 +64,9 @@ def test_generator():
 
             flag = True
             current_data = data.loc[:, start_time_stamp:end_time_stanp]
-            test_cur = pd.concat([test_cur, current_data], axis=1)
+            # test_cur = pd.concat([test_cur, current_data], axis=1)
             print('succesffully read test data of day {} '.format(day))
-        yield test_cur
+            yield current_data
 
 
 print('Successfully read test data')
