@@ -87,7 +87,7 @@
                     [ 3, 4, 0, 0, 1, 4, 3] -> Y
              
              Here x to y is a road, which is connected to intersection Y. How much intensity will be added 
-             th intersection Y for this calue ?
+             to the intersection Y for this road ?
              
             If 'is_intensity_continuous': False, and  'intensity_list_to_count': [3, 4],
                 we will calculated  the number of intensity with 3 or 4 over the road and add with the intersection.
