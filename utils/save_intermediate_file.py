@@ -10,7 +10,7 @@ def save_intermediate_file(current_dir, data, file_prefix):
     final_data = None
     for sub_data in data:
         np_data = np.array(sub_data)
-        final_data = np_data if not final_data else np.concatenate([final_data, np_data[:, 1:]], axis=1)
+        final_data = np_data if final_data is None else np.concatenate([final_data, np_data[:, 1:]], axis=1)
 
     file_name_relative = '{}_{}_inout.csv'.format(
         file_prefix,

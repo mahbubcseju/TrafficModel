@@ -26,7 +26,7 @@ def train_generator():
         for day in range(start_day, end_day + 1):
             day_div = (day - 1) // 5
             start_time_stamp = '{:02d}_11_2019 {}'.format(day, start_time)
-            end_time_stanp = '{:02d}_11_2019 {}'.format(day, end_time)
+            end_time_stamp = '{:02d}_11_2019 {}'.format(day, end_time)
 
             if (day - 1) % 5 == 0 or not flag:
                 data_set = 'november{}.csv'.format(day_div)
@@ -34,7 +34,7 @@ def train_generator():
                 data = pd.read_csv(data_path, index_col=0, low_memory=False)
 
             flag = True
-            current_data = data.loc[:, start_time_stamp:end_time_stanp]
+            current_data = data.loc[:, start_time_stamp:end_time_stamp]
             # train_cur = pd.concat([train_cur, current_data], axis=1)
             print('succesffully read train data of day {} '.format(day))
             yield current_data
