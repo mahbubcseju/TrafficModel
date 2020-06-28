@@ -7,6 +7,7 @@ import numpy as np
 from config import config
 from make_csv_for_regression import process_data_for_regression
 from utils.df_to_list import df_to_list, csv_to_list
+from utils import save_intermediate_file
 
 
 current_directory = os.getcwd()
@@ -79,6 +80,7 @@ in_out_data = csv_to_list(
 intensity_list_to_count = config['intensity_list_to_count'] if 'intensity_list_to_count' in config else [4]
 is_intensity_continuous = config['is_intensity_continuous'] if 'is_intensity_continuous' in config else True
 number_of_ignored_cell = config['number_of_ignored_cell'] if 'number_of_ignored_cell' in config else 1
+intermediate_file_save = config['intermediate_file_save'] if 'intermediate_file_save' in config else False
 
 
 train, test = [], []
@@ -93,6 +95,10 @@ for train1 in train_generator():
     )
     train.append(train_data)
 
+if intermediate_file_save:
+    save_intermediate_file(current_directory, train, 'train')
+
+
 for test1 in test_generator():
     test_data = process_data_for_regression(
         df_to_list(test1),
@@ -103,7 +109,11 @@ for test1 in test_generator():
     )
     test.append(test_data)
 
+
+if intermediate_file_save:
+    save_intermediate_file(current_directory, test, 'test')
 print('Successfully make in out data')
+
 
 sampling_rate = config['sampling_rate'] if 'sampling_rate' in config else 2
 seq_len = config['seq_len'] if 'seq_len' in config else  60
