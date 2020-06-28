@@ -129,8 +129,14 @@
         k. 'is_continuous': False,
             Lets say, we predicted  the next 5 timestamp. Now if is_continuous is True, then we will consider
             all the predicted timestamp to calculate the accuracy. Otherwise we will only use the last one.
+    
+    3.  Now run the models using the main.py file.
+        ```
+            python main.py
+        ```
+        After running the models, a csv file be automatically generated in csvs folder 
+    
           
-            
 ## Project Structure
 
 ![Project Structure](https://github.com/ResearchWithMahbubSir/TrafficModel/blob/master/Screen%20Shot%202020-04-18%20at%203.10.35.png)
