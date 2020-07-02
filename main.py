@@ -145,17 +145,16 @@ pre = [5, 15, 30, 45, 60]
 for sa in sam:
     for se in seq:
         for pr in pre:
-
             ans = run_models(
-                    current_directory,
-                    train,
-                    test,
-                    sampling_rate=sa,
-                    seq_len=(se * 2)//sa,
-                    pre_len=(pre_len * 2)//sa,
-                    repeat=repeat,
-                    is_continuous=is_continuous,
-                )
+                current_directory,
+                train,
+                test,
+                sampling_rate=sa,
+                seq_len=(se * 2)//sa,
+                pre_len=(pre_len * 2)//sa,
+                repeat=repeat,
+                is_continuous=is_continuous,
+            )
             result += ans
 
 final_file = os.path.join(current_directory, 'csvs', 'table')
