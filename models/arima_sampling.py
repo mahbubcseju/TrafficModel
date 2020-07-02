@@ -32,8 +32,14 @@ def arima_sampling(train, test, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3
         t_Y = np.reshape(t_Y, [-1, pre_len])
 
         result_y = []
+        test1_y = []
         for i in range(len(t_X)):
             a = np.array(t_X[i])
+            if np.sum(a) == 0:
+                continue
+
+            test1_y.append(t_Y[i]);
+
             if repeat:
                 output = model_output(a, 1, p, d, q)
                 temp_result = [output[0] for i in range(pre_len)]
@@ -41,6 +47,8 @@ def arima_sampling(train, test, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3
             else:
                 temp_result = model_output(a, pre_len, p, d, q)
                 result_y.append(np.array(temp_result))
+
+        t_Y = test1_y
 
         if not is_continuous:
             temp_test_y = []

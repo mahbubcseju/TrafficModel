@@ -23,6 +23,15 @@ def svr_sampling(train, test, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, 
         a_Y = a_Y[:, 0]
         a_Y = a_Y.flatten()
 
+        final_x, final_y = [], []
+        for i in range(len(a_X)):
+            if np.sum(a_X[i]) == 0:
+                continue
+            final_x.append(a_X[i])
+            final_y.append(a_Y[i])
+        a_X = np.array(final_x)
+        a_Y = np.array(final_y)
+
         model = SVR(kernel='rbf')
         model = model.fit(a_X, a_Y)
 
@@ -32,8 +41,14 @@ def svr_sampling(train, test, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, 
         t_Y = np.reshape(t_Y, [-1, pre_len])
 
         result_y = []
+        test1_y = []
         for i in range(len(t_X)):
             a = np.array(t_X[i])
+
+            if np.sum(a) == 0:
+                continue
+
+            test1_y.append(t_Y[i]);
             if repeat:
                 prediction = model.predict([a])
                 temp_result = [prediction[0] for i in range(pre_len)]
@@ -47,6 +62,7 @@ def svr_sampling(train, test, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, 
                     a = a[1:]
                 result_y.append(np.array(temp_result))
 
+        t_Y = test1_y
         if not is_continuous:
             temp_test_y = []
             temp_result_y = []
