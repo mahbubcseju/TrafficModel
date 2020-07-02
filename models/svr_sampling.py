@@ -48,7 +48,7 @@ def svr_sampling(train, test, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, 
             if np.sum(a) == 0:
                 continue
 
-            test1_y.append(t_Y[i]);
+            test1_y.append(t_Y[i])
             if repeat:
                 prediction = model.predict([a])
                 temp_result = [prediction[0] for i in range(pre_len)]
