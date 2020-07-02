@@ -124,13 +124,43 @@ is_continuous = config['is_continous'] if 'is_continous' in config else False
 
 from run_models import run_models
 
-run_models(
-    current_directory,
-    train,
-    test,
-    sampling_rate=sampling_rate,
-    seq_len=seq_len,
-    pre_len=pre_len,
-    repeat=repeat,
-    is_continuous=is_continuous,
-)
+result = [['Sampling Rate', 'Sequence length', 'Predicted length', 'RMSE', 'MAE', 'COR', 'R2']]
+
+# ans = run_models(
+#     current_directory,
+#     train,
+#     test,
+#     sampling_rate=sampling_rate,
+#     seq_len=seq_len,
+#     pre_len=pre_len,
+#     repeat=repeat,
+#     is_continuous=is_continuous,
+# )
+# result += ans
+
+sam = [1, 2, 10]
+seq = [15, 30, 45, 60]
+pre = [5, 15, 30, 45, 60]
+
+for sa in sam:
+    for se in seq:
+        for pr in pre:
+
+            ans = run_models(
+                    current_directory,
+                    train,
+                    test,
+                    sampling_rate=sa,
+                    seq_len=(se * 2)//sa,
+                    pre_len=(pre_len * 2)//sa,
+                    repeat=repeat,
+                    is_continuous=is_continuous,
+                )
+            result += ans
+
+final_file = os.path.join(current_directory, 'csvs', 'table')
+with open(final_file, 'w') as writer:
+    wr = csv.writer(writer)
+    wr.writerows(result)
+
+print('FINAL COMPLETE')
