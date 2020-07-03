@@ -19,7 +19,7 @@ def flatten(lis):
 
 
 def evaluation(a, b):
-    print(a, b)
+    # print(a, b)
 
     a1, b1 = list(flatten(a)), list(flatten(b))
 

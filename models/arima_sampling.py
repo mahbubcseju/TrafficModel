@@ -11,7 +11,8 @@ def model_output(data, prelen, p, d, q):
         trained_model = model.fit(disp=-1)
         output = trained_model.forecast(prelen)[0]
         return output
-    except Exception:
+    except Exception as e:
+        print(e)
         return [0] * prelen
 
 
