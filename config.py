@@ -2,15 +2,15 @@ config = {
     'train': {
         'set0': {
             'start_date': '01_11_2019',
-            'end_date': '01_11_2019',
-            'start_time': '12_34_01',
+            'end_date': '04_11_2019',
+            'start_time': '08_34_01',
             'end_time': '18_36_31',
         },
     },
     'test': {
         'set0': {
             'start_date': '01_11_2019',
-            'end_date': '01_11_2019',
+            'end_date': '04_11_2019',
             'start_time': '18_34_01',
             'end_time': '22_35_01',
         }
