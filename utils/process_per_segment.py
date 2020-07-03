@@ -11,7 +11,7 @@ from scipy.stats.stats import pearsonr
 
 def flatten(lis):
     for item in lis:
-        if isinstance(item, Iterable) and not isinstance(item, basestring):
+        if isinstance(item, Iterable) and not isinstance(item, str):
             for x in flatten(item):
                 yield x
         else:
@@ -21,7 +21,7 @@ def flatten(lis):
 def evaluation(a, b):
     print(a, b)
 
-    a1, b1 = flatten(a), flatten(b)
+    a1, b1 = list(flatten(a)), list(flatten(b))
 
     a1 = np.array(a1, dtype="float")
     b1 = np.array(b1, dtype="float")
