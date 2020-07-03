@@ -12,7 +12,7 @@ def model_output(data, prelen, p, d, q):
         output = trained_model.forecast(prelen)[0]
         return output
     except Exception as e:
-        print(e)
+        print(e, data)
         return [0] * prelen
 
 
