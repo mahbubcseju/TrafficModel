@@ -32,7 +32,7 @@ def evaluation(a, b):
 def process_per_segment(whos, test, result):
     answer =[[whos, whos, whos, whos]]
     answer.append(['RMSE', 'MAE', 'COR', 'R2'])
-    print(test, result)
+    print(test.shape, result.shape)
     for i in range(len(test)):
         rmse, mae, cor, r2 = evaluation(test[i], result[i])
         answer.append([rmse, mae, cor, r2])
