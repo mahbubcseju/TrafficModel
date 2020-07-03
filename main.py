@@ -40,9 +40,6 @@ def train_generator():
             yield current_data
 
 
-print('Successfully read train data')
-
-
 def test_generator():
     for key in config['test']:
         value = config['test'][key]
@@ -69,8 +66,6 @@ def test_generator():
             print('succesffully read test data of day {} '.format(day))
             yield current_data
 
-
-print('Successfully read test data')
 
 in_out_data = csv_to_list(
     current_directory,

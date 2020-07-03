@@ -10,21 +10,21 @@ from scipy.stats.stats import pearsonr
 
 def evaluation(a, b):
     print(a, b)
-    a = np.array(a, dtype=np.float)
-    b = np.array(b, dtype=np.float)
-    rmse = math.sqrt(mean_squared_error(a,b))
-    mae = mean_absolute_error(a, b)
-    a = a.flatten()
-    b = b.flatten()
-    if not statistics.stdev(a) or not statistics.stdev(b):
+    a1 = np.array(a, dtype=np.float)
+    b1 = np.array(b, dtype=np.float)
+    rmse = math.sqrt(mean_squared_error(a1,b1))
+    mae = mean_absolute_error(a1, b1)
+    a1 = a1.flatten()
+    b1 = b1.flatten()
+    if not statistics.stdev(a1) or not statistics.stdev(b1):
         cor = 1
     else:
-        cor, _ = pearsonr(a, b)
+        cor, _ = pearsonr(a1, b1)
 
-    if not statistics.stdev(a):
+    if not statistics.stdev(a1):
         r2 = 1
     else:
-        r2 = r2_score(a, b)
+        r2 = r2_score(a1, b1)
 
     return rmse, mae, cor, r2
 
