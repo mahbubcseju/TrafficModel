@@ -10,9 +10,8 @@ from scipy.stats.stats import pearsonr
 
 def evaluation(a, b):
     print(a, b)
-    # a1 = np.array(a, dtype=np.float)
-    # b1 = np.array(b, dtype=np.float)
-    a1, b1 = a, b
+    a1 = np.array(a, dtype=np.float)
+    b1 = np.array(b, dtype=np.float)
     rmse = math.sqrt(mean_squared_error(a1,b1))
     mae = mean_absolute_error(a1, b1)
     a1 = a1.flatten()

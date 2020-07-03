@@ -57,8 +57,8 @@ def ha_sampling(train, test, seq_len=12, sampling_rate=2, pre_len=3, repeat=Fals
         total_test_Y.append(t_Y)
         total_predict_Y.append(result_y)
 
-    test1 = np.reshape(np.array(total_test_Y), (num_nodes, -1))
-    result1 = np.reshape(np.array(total_predict_Y), (num_nodes, -1))
+    test1 = np.reshape(np.array(total_test_Y), (num_nodes, -1)).tolist()
+    result1 = np.reshape(np.array(total_predict_Y), (num_nodes, -1)).tolist()
 
     return header, test1, result1
 
