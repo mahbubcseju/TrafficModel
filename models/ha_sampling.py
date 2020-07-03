@@ -28,7 +28,7 @@ def ha_sampling(train, test, seq_len=12, sampling_rate=2, pre_len=3, repeat=Fals
             if np.sum(a) == 0:
                 continue
 
-            test1_y.append(list(t_Y[i]))
+            test1_y.append(t_Y[i])
 
             if repeat:
                 output = np.mean(a)
