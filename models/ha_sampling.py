@@ -28,12 +28,12 @@ def ha_sampling(train, test, seq_len=12, sampling_rate=2, pre_len=3, repeat=Fals
             if np.sum(a) == 0:
                 continue
 
-            test1_y.append(t_Y[i])
+            test1_y.append(list(t_Y[i]))
 
             if repeat:
                 output = np.mean(a)
                 temp_result = [output for i in range(pre_len)]
-                result_y.append(np.array(temp_result))
+                result_y.append(temp_result)
             else:
                 temp_result = []
                 for nxt in range(pre_len):
@@ -41,7 +41,7 @@ def ha_sampling(train, test, seq_len=12, sampling_rate=2, pre_len=3, repeat=Fals
                     temp_result.append(prediction)
                     a = np.append(a, prediction)
                     a = a[1:]
-                result_y.append(np.array(temp_result))
+                result_y.append(temp_result)
 
         t_Y = test1_y
 
@@ -54,8 +54,8 @@ def ha_sampling(train, test, seq_len=12, sampling_rate=2, pre_len=3, repeat=Fals
             t_Y = temp_test_y
             result_y = temp_result_y
 
-        total_test_Y.append(np.array(t_Y))
-        total_predict_Y.append(np.array(result_y))
+        total_test_Y.append(t_Y)
+        total_predict_Y.append(result_y)
 
     test1 = np.reshape(np.array(total_test_Y), [num_nodes, -1])
     result1 = np.reshape(np.array(total_predict_Y), [num_nodes, -1])
