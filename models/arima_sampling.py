@@ -46,7 +46,7 @@ def arima_sampling(train, test, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3
                 result_y.append(temp_result)
             else:
                 temp_result = model_output(a, pre_len, p, d, q)
-                result_y.append(np.array(temp_result))
+                result_y.append(temp_result)
 
         t_Y = test1_y
 
@@ -59,10 +59,10 @@ def arima_sampling(train, test, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3
             t_Y = temp_test_y
             result_y = temp_result_y
 
-        total_test_Y.append(np.array(t_Y))
-        total_predict_Y.append(np.array(result_y))
+        total_test_Y.append(t_Y)
+        total_predict_Y.append(result_y)
 
-    test1 = np.reshape(np.array(total_test_Y), [num_nodes, -1])
-    result1 = np.reshape(np.array(total_predict_Y), [num_nodes, -1])
+    # test1 = np.reshape(np.array(total_test_Y), [num_nodes, -1])
+    # result1 = np.reshape(np.array(total_predict_Y), [num_nodes, -1])
 
-    return header, test1, result1
+    return header, total_test_Y, total_predict_Y
