@@ -1,6 +1,7 @@
 import numpy.linalg as la
 import math
 import statistics
+from collections import Iterable
 
 import numpy as np
 from sklearn.metrics import mean_squared_error,mean_absolute_error, r2_score
@@ -8,14 +9,26 @@ import pandas as pd
 from scipy.stats.stats import pearsonr
 
 
+def flatten(lis):
+    for item in lis:
+        if isinstance(item, Iterable) and not isinstance(item, basestring):
+            for x in flatten(item):
+                yield x
+        else:
+            yield item
+
+
 def evaluation(a, b):
     print(a, b)
-    a1 = np.array(a, dtype=np.float)
-    b1 = np.array(b, dtype=np.float)
+
+    a1, b1 = flatten(a), flatten(b)
+
+    a1 = np.array(a1, dtype="float")
+    b1 = np.array(b1, dtype="float")
+
     rmse = math.sqrt(mean_squared_error(a1,b1))
     mae = mean_absolute_error(a1, b1)
-    a1 = a1.flatten()
-    b1 = b1.flatten()
+
     if not statistics.stdev(a1) or not statistics.stdev(b1):
         cor = 1
     else:
