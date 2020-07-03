@@ -9,6 +9,7 @@ from scipy.stats.stats import pearsonr
 
 
 def evaluation(a, b):
+    print(a, b)
     a = np.array(a, dtype=np.float)
     b = np.array(b, dtype=np.float)
     rmse = math.sqrt(mean_squared_error(a,b))
