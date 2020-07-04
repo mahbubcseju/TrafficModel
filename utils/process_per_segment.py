@@ -20,26 +20,28 @@ def flatten(lis):
 
 def evaluation(a, b):
     # print(a, b)
+    try:
+        a1, b1 = list(flatten(a)), list(flatten(b))
 
-    a1, b1 = list(flatten(a)), list(flatten(b))
+        a1 = np.array(a1, dtype="float")
+        b1 = np.array(b1, dtype="float")
 
-    a1 = np.array(a1, dtype="float")
-    b1 = np.array(b1, dtype="float")
+        rmse = math.sqrt(mean_squared_error(a1,b1))
+        mae = mean_absolute_error(a1, b1)
 
-    rmse = math.sqrt(mean_squared_error(a1,b1))
-    mae = mean_absolute_error(a1, b1)
+        if not statistics.stdev(a1) or not statistics.stdev(b1):
+            cor = 1
+        else:
+            cor, _ = pearsonr(a1, b1)
 
-    if not statistics.stdev(a1) or not statistics.stdev(b1):
-        cor = 1
-    else:
-        cor, _ = pearsonr(a1, b1)
+        if not statistics.stdev(a1):
+            r2 = 1
+        else:
+            r2 = r2_score(a1, b1)
 
-    if not statistics.stdev(a1):
-        r2 = 1
-    else:
-        r2 = r2_score(a1, b1)
-
-    return rmse, mae, cor, r2
+        return rmse, mae, cor, r2
+    except Exception as e:
+        return 'No sequence', 'No Sequence', 'No sequence', 'No Sequence'
 
 
 def process_per_segment(whos, test, result):
