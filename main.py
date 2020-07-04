@@ -152,9 +152,9 @@ pre = [5, 15, 30, 45, 60]
 #             )
 #             result += ans
 #
-# final_file = os.path.join(current_directory, 'csvs', 'table')
-# with open(final_file, 'w') as writer:
-#     wr = csv.writer(writer)
-#     wr.writerows(result)
-#
-# print('FINAL COMPLETE')
+final_file = os.path.join(current_directory, 'csvs', 'table')
+with open(final_file, 'w') as writer:
+    wr = csv.writer(writer)
+    wr.writerows(result)
+
+print('FINAL COMPLETE')
