@@ -146,7 +146,7 @@ for sa in sam:
                 test,
                 sampling_rate=sa,
                 seq_len=(se * 2)//sa,
-                pre_len=(pre_len * 2)//sa,
+                pre_len=(pr * 2)//sa,
                 repeat=repeat,
                 is_continuous=is_continuous,
             )
