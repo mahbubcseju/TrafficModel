@@ -10,6 +10,7 @@ def model_output(data, prelen, p, d, q):
         model = ARIMA(data, order=[p, d, q])
         trained_model = model.fit(disp=-1)
         output = trained_model.forecast(prelen)[0]
+        print(data, "output", output)
         return output, 1
     except Exception as e:
         print(e, data)
@@ -25,6 +26,8 @@ def arima_sampling(train, test, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3
     total_test_Y, total_predict_Y = [], []
     count_invalid, total = 0, 0
     for i in range(num_nodes):
+        if i !=26:
+            continue
         a_X, a_Y = train_x[:, :, i], train_y[:, :, i]
         t_X, t_Y = test_x[:, :, i], test_y[:, :, i]
 

@@ -119,7 +119,7 @@ is_continuous = config['is_continous'] if 'is_continous' in config else False
 
 from run_models import run_models
 
-result = [['Sampling Rate', 'Sequence length', 'Predicted length', 'RMSE', 'MAE', 'COR', 'R2', 'valid/total']]
+result = [['Sampling Rate', 'Sequence length', 'Predicted length', "", 'RMSE', 'MAE', 'COR', 'R2', 'invalid/total']]
 
 # ans = run_models(
 #     current_directory,
@@ -146,7 +146,7 @@ for sa in sam:
                 test,
                 sampling_rate=sa,
                 seq_len=(se * 2)//sa,
-                pre_len=(pr * 2)//sa,
+                pre_len=(pre_len * 2)//sa,
                 repeat=repeat,
                 is_continuous=is_continuous,
             )
