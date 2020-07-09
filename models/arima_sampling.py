@@ -26,8 +26,6 @@ def arima_sampling(train, test, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3
     total_test_Y, total_predict_Y = [], []
     count_invalid, total = 0, 0
     for i in range(num_nodes):
-        if i !=26:
-            continue
         a_X, a_Y = train_x[:, :, i], train_y[:, :, i]
         t_X, t_Y = test_x[:, :, i], test_y[:, :, i]
 
