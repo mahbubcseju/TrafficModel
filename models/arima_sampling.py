@@ -10,11 +10,10 @@ def model_output(data, prelen, p, d, q):
         model = ARIMA(data, order=[p, d, q])
         trained_model = model.fit(disp=-1)
         output = trained_model.forecast(prelen)[0]
-        if sum(output) >= 2000:
+        if max(output) >= 2000:
             print(data, "output", output)
         return output, 1
     except Exception as e:
-        print(e, data)
         return [0] * prelen, 0
 
 

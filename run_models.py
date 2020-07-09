@@ -77,6 +77,7 @@ def run_models(base_directory, train_nt, test_nt, sampling_rate=2, seq_len=60, p
 
     arima_header, arima_test, arima_result, count_invalid, total = arima_sampling(train, test, seq_len=seq_len, pre_len=pre_len, repeat=repeat, is_continuous=is_continuous, sampling_rate=sampling_rate, p=1, d=1, q=1)
     arima_temp_result = process_per_segment('ARIMA', arima_test, arima_result)
+    print(arima_temp_result)
     result = np.concatenate([result, arima_temp_result], axis=1)
     _avg = [sampling_rate, seq_len, pre_len, 'ARIMA']
     for i in arima_temp_result[-1]:
