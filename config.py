@@ -2,15 +2,39 @@ config = {
     'train': {
         'set0': {
             'start_date': '01_11_2019',
+            'end_date': '01_11_2019',
+            # 'start_time': '06_00_01',
+            # 'end_time': '23_59_31',
+        },
+        'set1': {
+            'start_date': '04_11_2019',
+            'end_date': '08_11_2019',
+            # 'start_time': '06_00_01',
+            # 'end_time': '23_59_31',
+        },
+        'set3': {
+            'start_date': '11_11_2019',
             'end_date': '15_11_2019',
+            # 'start_time': '06_00_01',
+            # 'end_time': '23_59_31',
+        },
+        'set4': {
+            'start_date': '18_11_2019',
+            'end_date': '20_11_2019',
             # 'start_time': '06_00_01',
             # 'end_time': '23_59_31',
         },
     },
     'test': {
         'set0': {
-            'start_date': '16_11_2019',
-            'end_date': '20_11_2019',
+            'start_date': '21_11_2019',
+            'end_date': '22_11_2019',
+            # 'start_time': '0_34_01',
+            # 'end_time': '22_35_01',
+        },
+        'set1': {
+            'start_date': '25_11_2019',
+            'end_date': '29_11_2019',
             # 'start_time': '0_34_01',
             # 'end_time': '22_35_01',
         }
