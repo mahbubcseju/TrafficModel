@@ -133,28 +133,50 @@ result = [['Sampling Rate', 'Sequence length', 'Predicted length', "", 'RMSE', '
 # )
 # result += ans
 
-sam = [1, 2, 10]
+# sam = [1, 2, 10]
+sam = [2]
 seq = [15, 30, 45, 60]
-pre = [5, 15, 30, 45, 60]
+pre = [15]
+# pre = [5, 15, 30, 45, 60]
+
+import threading
+
+
+def run_models_within_threading(cd, tr, tt, sr=1, sl=12, pl=3, rt=False, ic=True, rst=None):
+    ans1 = run_models(
+        cd,
+        tr,
+        tt,
+        sampling_rate=sr,
+        seq_len=sl,
+        pre_len=pl,
+        repeat=rt,
+        is_continuous=ic,
+    )
+    rst += ans1
+
 
 for sa in sam:
     for se in seq:
         for pr in pre:
-            ans = run_models(
-                current_directory,
-                train,
-                test,
-                sampling_rate=sa,
-                seq_len=(se * 2)//sa,
-                pre_len=(pre_len * 2)//sa,
-                repeat=repeat,
-                is_continuous=is_continuous,
+            thread = threading.Thread(
+                run_models_within_threading,
+                args=(
+                    current_directory,
+                    train,
+                    test,
+                    sa,
+                    (se * 2)//sa,
+                    (pre_len * 2)//sa,
+                    repeat,
+                    is_continuous,
+                    result)
             )
-            result += ans
+            thread.start()
 
-final_file = os.path.join(current_directory, 'csvs', 'table.csv')
-with open(final_file, 'w') as writer:
-    wr = csv.writer(writer)
-    wr.writerows(result)
-
-print('FINAL COMPLETE')
+# final_file = os.path.join(current_directory, 'csvs', 'table.csv')
+# with open(final_file, 'w') as writer:
+#     wr = csv.writer(writer)
+#     wr.writerows(result)
+#
+# print('FINAL COMPLETE')
