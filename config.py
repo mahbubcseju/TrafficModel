@@ -26,12 +26,12 @@ config = {
             # 'start_time': '0_34_01',
             # 'end_time': '22_35_01',
         },
-        'set1': {
-            'start_date': '24_11_2019',
-            'end_date': '28_11_2019',
-            # 'start_time': '0_34_01',
-            # 'end_time': '22_35_01',
-        }
+        # 'set1': {
+        #     'start_date': '24_11_2019',
+        #     'end_date': '28_11_2019',
+        #     # 'start_time': '0_34_01',
+        #     # 'end_time': '22_35_01',
+        # }
     },
     'intensity_list_to_count': [3, 4],
     'is_intensity_continuous': True,
