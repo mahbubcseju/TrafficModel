@@ -160,7 +160,7 @@ for sa in sam:
     for se in seq:
         for pr in pre:
             thread = threading.Thread(
-                run_models_within_threading,
+                target=run_models_within_threading,
                 args=(
                     current_directory,
                     train,
