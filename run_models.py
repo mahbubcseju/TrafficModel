@@ -27,33 +27,33 @@ def run_models(base_directory, train_nt, test_nt, sampling_rate=2, seq_len=60, p
     train = [np.array(data).T for data in train_nt]
     test = [ np.array(data).T for data in test_nt]
 
-    be_ha = time.time()
-    ha_header, ha_test, ha_result = ha_sampling(train, test, seq_len=seq_len, pre_len=pre_len, repeat=repeat, is_continuous=is_continuous, sampling_rate=sampling_rate)
-    for i in range(len(ha_header)):
-        result.append([i, ha_header[i]])
-    result.append(['Average', ''])
-    result = np.array(result)
+    # be_ha = time.time()
+    # ha_header, ha_test, ha_result = ha_sampling(train, test, seq_len=seq_len, pre_len=pre_len, repeat=repeat, is_continuous=is_continuous, sampling_rate=sampling_rate)
+    # for i in range(len(ha_header)):
+    #     result.append([i, ha_header[i]])
+    # result.append(['Average', ''])
+    # result = np.array(result)
+    #
+    # ha_temp_result = process_per_segment('HA', ha_test, ha_result)
+    # result = np.concatenate([result, ha_temp_result], axis=1)
+    # ha_avg = [sampling_rate, seq_len, pre_len, 'HA']
+    # for i in ha_temp_result[-1]:
+    #     ha_avg.append(i)
+    # ans.append(ha_avg)
 
-    ha_temp_result = process_per_segment('HA', ha_test, ha_result)
-    result = np.concatenate([result, ha_temp_result], axis=1)
-    ha_avg = [sampling_rate, seq_len, pre_len, 'HA']
-    for i in ha_temp_result[-1]:
-        ha_avg.append(i)
-    ans.append(ha_avg)
-
-    print('HA Complete')
-
-    be_svr = time.time()
-    svr_header, svr_test, svr_result = svr_sampling(train, test, seq_len=seq_len, pre_len=pre_len, repeat=repeat, is_continuous=is_continuous, sampling_rate=sampling_rate)
-    svr_temp_result = process_per_segment('SVR', svr_test, svr_result)
-    result = np.concatenate([result, svr_temp_result], axis=1)
-
-    svr_avg = [sampling_rate, seq_len, pre_len, 'SVR']
-    for i in svr_temp_result[-1]:
-        svr_avg.append(i)
-    ans.append(svr_avg)
-
-    print('SVR Complete')
+    # print('HA Complete')
+    #
+    # be_svr = time.time()
+    # svr_header, svr_test, svr_result = svr_sampling(train, test, seq_len=seq_len, pre_len=pre_len, repeat=repeat, is_continuous=is_continuous, sampling_rate=sampling_rate)
+    # svr_temp_result = process_per_segment('SVR', svr_test, svr_result)
+    # result = np.concatenate([result, svr_temp_result], axis=1)
+    #
+    # svr_avg = [sampling_rate, seq_len, pre_len, 'SVR']
+    # for i in svr_temp_result[-1]:
+    #     svr_avg.append(i)
+    # ans.append(svr_avg)
+    #
+    # print('SVR Complete')
 
     # # arima(data, pre_len=3, repeat=False, is_continuous=True)
     # # arima_sampling(data, seq_len=60, pre_len=5, repeat=False, is_continuous=False, sampling_rate=2)
@@ -69,28 +69,28 @@ def run_models(base_directory, train_nt, test_nt, sampling_rate=2, seq_len=60, p
     # print(intersection_name_from_adj, intersection_name_from_data)
     # print(all(intersection_name_from_adj == intersection_name_from_data))
     #
-    be_svr_gr = time.time()
-    svr_graph_header, svr_graph_test, svr_graph_result = svr_sampling_graph(train, test, adjacency_matrix, seq_len=seq_len, pre_len=pre_len, repeat=repeat, is_continuous=is_continuous, sampling_rate=sampling_rate)
-    svr_graph_temp_result = process_per_segment('SVR GRAPH', svr_graph_test, svr_graph_result)
-    result = np.concatenate([result, svr_graph_temp_result], axis=1)
-    _avg = [sampling_rate, seq_len, pre_len, 'SVR_GRAPH']
-    for i in svr_graph_temp_result[-1]:
-        _avg.append(i)
-    ans.append(_avg)
-    print('SVR GRAPH Complete')
+    # be_svr_gr = time.time()
+    # svr_graph_header, svr_graph_test, svr_graph_result = svr_sampling_graph(train, test, adjacency_matrix, seq_len=seq_len, pre_len=pre_len, repeat=repeat, is_continuous=is_continuous, sampling_rate=sampling_rate)
+    # svr_graph_temp_result = process_per_segment('SVR GRAPH', svr_graph_test, svr_graph_result)
+    # result = np.concatenate([result, svr_graph_temp_result], axis=1)
+    # _avg = [sampling_rate, seq_len, pre_len, 'SVR_GRAPH']
+    # for i in svr_graph_temp_result[-1]:
+    #     _avg.append(i)
+    # ans.append(_avg)
+    # print('SVR GRAPH Complete')
 
     be_arima = time.time()
-    # arima_header, arima_test, arima_result, count_invalid, total = arima_sampling(train, test, seq_len=seq_len, pre_len=pre_len, repeat=repeat, is_continuous=is_continuous, sampling_rate=sampling_rate, p=1, d=1, q=1)
-    # arima_temp_result = process_per_segment('ARIMA', arima_test, arima_result)
-    # result = np.concatenate([result, arima_temp_result], axis=1)
-    # _avg = [sampling_rate, seq_len, pre_len, 'ARIMA']
-    # for i in arima_temp_result[-1]:
-    #     _avg.append(i)
-    # _avg.append(str(count_invalid) + "/" + str(total))
-    # ans.append(_avg)
-    # print('Arima complete')
-    #
-    # af_arima = time.time()
+    arima_header, arima_test, arima_result, count_invalid, total = arima_sampling(train, test, seq_len=seq_len, pre_len=pre_len, repeat=repeat, is_continuous=is_continuous, sampling_rate=sampling_rate, p=1, d=1, q=1)
+    arima_temp_result = process_per_segment('ARIMA', arima_test, arima_result)
+    result = np.concatenate([result, arima_temp_result], axis=1)
+    _avg = [sampling_rate, seq_len, pre_len, 'ARIMA']
+    for i in arima_temp_result[-1]:
+        _avg.append(i)
+    _avg.append(str(count_invalid) + "/" + str(total))
+    ans.append(_avg)
+    print('Arima complete')
+
+    af_arima = time.time()
 
     final_result = [
         ['Date', '29-05-2019'],
@@ -115,7 +115,5 @@ def run_models(base_directory, train_nt, test_nt, sampling_rate=2, seq_len=60, p
         wr.writerows(final_result)
 
     print('FINAL COMPLETE')
-    print("Ha Takes: ", be_svr - be_ha)
-    print("SVR takes: ", be_svr_gr - be_svr)
-    print("SVR_Graph Takes", be_arima - be_svr_gr)
+    print("AriMA Takes: ", af_arima - be_arima)
     return ans
