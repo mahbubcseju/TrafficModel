@@ -16,7 +16,6 @@ def model_output(data, prelen, p, d, q):
             return output, 0
         return output, 1
     except Exception as e:
-        print("Error", e)
         return [0] * prelen, 0
 
 
