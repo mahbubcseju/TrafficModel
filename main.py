@@ -139,7 +139,7 @@ seq = [15, 30, 45, 60]
 pre = [5, 15, 30, 45, 60]
 # pre = [5, 15, 30, 45, 60]
 
-import threading
+import multiprocessing
 
 def run_models_within_threading(cd, tr, tt, sr=1, sl=12, pl=3, rt=False, ic=True, rst=None):
     ans1 = run_models(
@@ -158,7 +158,7 @@ def run_models_within_threading(cd, tr, tt, sr=1, sl=12, pl=3, rt=False, ic=True
 for sa in sam:
     for se in seq:
         for pr in pre:
-            thread = threading.Thread(
+            process = multiprocessing.Process(
                 target=run_models_within_threading,
                 args=(
                     current_directory,
@@ -171,7 +171,7 @@ for sa in sam:
                     is_continuous,
                     result)
             )
-            thread.start()
+            process.start()
 
 # final_file = os.path.join(current_directory, 'csvs', 'table.csv')
 # with open(final_file, 'w') as writer:
