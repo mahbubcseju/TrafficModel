@@ -141,7 +141,6 @@ pre = [5, 15, 30, 45, 60]
 
 import threading
 
-
 def run_models_within_threading(cd, tr, tt, sr=1, sl=12, pl=3, rt=False, ic=True, rst=None):
     ans1 = run_models(
         cd,
@@ -167,7 +166,7 @@ for sa in sam:
                     test,
                     sa,
                     (se * 2)//sa,
-                    (pre_len * 2)//sa,
+                    (pr * 2)//sa,
                     repeat,
                     is_continuous,
                     result)
