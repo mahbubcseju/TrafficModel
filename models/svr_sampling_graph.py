@@ -1,6 +1,7 @@
 import numpy as np
 
 from sklearn.svm import LinearSVR, SVR
+from sklearn.multioutput import MultiOutputRegressor
 
 from utils import preprocess_data_sampling_graph, evaluation, preprocess_data_config
 
@@ -22,8 +23,11 @@ def svr_sampling_graph(train, test, adjacency_matrix, rate=0.5, seq_len=12, samp
         a_X = np.array(a_X)
         a_X = np.reshape(a_X, [-1, seq_len * total_adjacent])
         a_Y = np.array(a_Y)
-        a_Y = a_Y[:, 0]
-        a_Y = a_Y.flatten()
+        a_Y = np.reshape(a_Y, [-1, pre_len])
+
+        if repeat:
+            a_Y = a_Y[:, 0]
+            a_Y = a_Y.flatten()
 
         final_x, final_y = [], []
         for i in range(len(a_X)):
@@ -34,7 +38,10 @@ def svr_sampling_graph(train, test, adjacency_matrix, rate=0.5, seq_len=12, samp
         a_X = np.array(final_x)
         a_Y = np.array(final_y)
 
-        model = SVR(kernel='rbf')
+        if repeat == False:
+            model = MultiOutputRegressor(SVR(kernel='rbf'))
+        else:
+            model = SVR(kernel='rbf')
         model = model.fit(a_X, a_Y)
 
         t_X = np.array(t_X)
@@ -56,13 +63,13 @@ def svr_sampling_graph(train, test, adjacency_matrix, rate=0.5, seq_len=12, samp
                 temp_result = [prediction[0] for i in range(pre_len)]
                 result_y.append(temp_result)
             else:
-                temp_result = []
-                for nxt in range(pre_len):
-                    prediction = model.predict([a])
-                    temp_result.append(prediction[0])
-                    a = np.append(a, prediction[0])
-                    a = a[1:]
-                result_y.append(temp_result)
+                temp_result = model.predict([a])
+                # for nxt in range(pre_len):
+                #     prediction = model.predict([a])
+                #     temp_result.append(prediction[0])
+                #     a = np.append(a, prediction[0])
+                #     a = a[1:]
+                result_y.append(temp_result[0])
 
         t_Y = test1_y
         if not is_continuous:

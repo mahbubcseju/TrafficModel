@@ -38,8 +38,8 @@ config = {
     'number_of_ignored_cell': 3,
     'intermediate_file_save': False,
     'sampling_rate': 2,
-    'seq_len': 12,
-    'pre_len': 10,
+    'seq_len': 60,
+    'pre_len': 5,
     'repeat': False,
     'is_continuous': False,
 }

@@ -1,3 +1,4 @@
+import logging
 import numpy as np
 
 from statsmodels.tsa.arima_model import ARIMA
@@ -10,14 +11,19 @@ def model_output(data, prelen, p, d, q):
         model = ARIMA(data, order=[p, d, q])
         trained_model = model.fit(disp=-1)
         output = trained_model.forecast(prelen)[0]
+        print(output)
         if max(abs(output)) >= 1500:
             return output, 0
         return output, 1
     except Exception as e:
+        print("Error", e)
         return [0] * prelen, 0
 
 
 def arima_sampling(train, test, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, repeat=False, is_continuous=True, p=2, d=1, q=3):
+    logger = logging.getLogger()
+    logger.propagate = False
+
     train_x, train_y, header = preprocess_data_config(train,  seq_len, sampling_rate=sampling_rate, pre_len=pre_len)
     test_x, test_y, header = preprocess_data_config(test, seq_len, sampling_rate=sampling_rate, pre_len=pre_len)
 
