@@ -71,11 +71,12 @@ def arima_sampling(train, test, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3
                     )
                 )
             )
-            for th in threads:
-                th.start()
 
-            for th in threads:
-                th.join()
+        for th in threads:
+            th.start()
+
+        for th in threads:
+            th.join()
 
         t_Y = test1_y
         count_invalid += (totall - len(test1_y))
