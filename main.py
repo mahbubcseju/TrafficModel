@@ -121,17 +121,17 @@ from run_models import run_models
 
 result = [['Sampling Rate', 'Sequence length', 'Predicted length', "", 'RMSE', 'MAE', 'COR', 'R2', 'invalid/total']]
 
-ans = run_models(
-    current_directory,
-    train,
-    test,
-    sampling_rate=sampling_rate,
-    seq_len=seq_len,
-    pre_len=pre_len,
-    repeat=repeat,
-    is_continuous=is_continuous,
-)
-result += ans
+# ans = run_models(
+#     current_directory,
+#     train,
+#     test,
+#     sampling_rate=sampling_rate,
+#     seq_len=seq_len,
+#     pre_len=pre_len,
+#     repeat=repeat,
+#     is_continuous=is_continuous,
+# )
+# result += ans
 
 # sam = [1, 2, 10]
 sam = [1]
