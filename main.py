@@ -134,49 +134,49 @@ ans = run_models(
 result += ans
 
 # sam = [1, 2, 10]
-sam = [2]
+sam = [1]
 seq = [15, 30, 45, 60]
-pre = [15]
+pre = [5, 15, 30, 45, 60]
 # pre = [5, 15, 30, 45, 60]
 
-# import threading
-#
-#
-# def run_models_within_threading(cd, tr, tt, sr=1, sl=12, pl=3, rt=False, ic=True, rst=None):
-#     ans1 = run_models(
-#         cd,
-#         tr,
-#         tt,
-#         sampling_rate=sr,
-#         seq_len=sl,
-#         pre_len=pl,
-#         repeat=rt,
-#         is_continuous=ic,
-#     )
-#     rst += ans1
-#
-#
-# for sa in sam:
-#     for se in seq:
-#         for pr in pre:
-#             thread = threading.Thread(
-#                 target=run_models_within_threading,
-#                 args=(
-#                     current_directory,
-#                     train,
-#                     test,
-#                     sa,
-#                     (se * 2)//sa,
-#                     (pre_len * 2)//sa,
-#                     repeat,
-#                     is_continuous,
-#                     result)
-#             )
-#             thread.start()
+import threading
 
-final_file = os.path.join(current_directory, 'csvs', 'table.csv')
-with open(final_file, 'w') as writer:
-    wr = csv.writer(writer)
-    wr.writerows(result)
 
-print('FINAL COMPLETE')
+def run_models_within_threading(cd, tr, tt, sr=1, sl=12, pl=3, rt=False, ic=True, rst=None):
+    ans1 = run_models(
+        cd,
+        tr,
+        tt,
+        sampling_rate=sr,
+        seq_len=sl,
+        pre_len=pl,
+        repeat=rt,
+        is_continuous=ic,
+    )
+    rst += ans1
+
+
+for sa in sam:
+    for se in seq:
+        for pr in pre:
+            thread = threading.Thread(
+                target=run_models_within_threading,
+                args=(
+                    current_directory,
+                    train,
+                    test,
+                    sa,
+                    (se * 2)//sa,
+                    (pre_len * 2)//sa,
+                    repeat,
+                    is_continuous,
+                    result)
+            )
+            thread.start()
+
+# final_file = os.path.join(current_directory, 'csvs', 'table.csv')
+# with open(final_file, 'w') as writer:
+#     wr = csv.writer(writer)
+#     wr.writerows(result)
+#
+# print('FINAL COMPLETE')
