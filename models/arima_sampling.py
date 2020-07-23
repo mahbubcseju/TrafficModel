@@ -1,23 +1,27 @@
 import logging
 import numpy as np
+import threading
 
 from statsmodels.tsa.arima_model import ARIMA
 
 from utils import preprocess_data_config, evaluation
 
 
-def model_output(data, prelen, p, d, q):
+def model_output(pred, orig, cur, data, prelen, p, d, q, repeat=False ):
     try:
         model = ARIMA(data, order=[p, d, q])
         trained_model = model.fit(disp=-1)
-        output = trained_model.forecast(prelen)[0]
-        print(output)
-        if max(abs(output)) >= 1500:
-            return output, 0
-        return output, 1
+        if repeat:
+            output = trained_model.forecast(1)[0]
+            output = [output[0] for i in range(prelen)]
+        else:
+            output = trained_model.forecast(prelen)[0]
+        if max(abs(output)) <= 1500:
+            pred.append(output)
+            orig.append(cur)
     except Exception as e:
         print("Error", e)
-        return [0] * prelen, 0
+
 
 
 def arima_sampling(train, test, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, repeat=False, is_continuous=True, p=2, d=1, q=3):
@@ -42,25 +46,40 @@ def arima_sampling(train, test, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3
 
         result_y = []
         test1_y = []
+
+        threads = []
+        totall = 0
         for i in range(len(t_X)):
             a = np.array(t_X[i])
             if np.sum(a) == 0:
                 continue
 
-            if repeat:
-                output, is_valid = model_output(a, 1, p, d, q)
-                temp_result = [output[0] for i in range(pre_len)]
-            else:
-                temp_result, is_valid = model_output(a, pre_len, p, d, q)
+            totall += 1
+            threads.append(
+                threading.Thread(
+                    target=model_output,
+                    args=(
+                        result_y,
+                        test1_y,
+                        t_Y[i].tolist(),
+                        a,
+                        pre_len,
+                        p,
+                        d,
+                        q,
+                        repeat
+                    )
+                )
+            )
+            for th in threads:
+                th.start()
 
-            total += 1
-            if is_valid:
-                result_y.append(temp_result)
-                test1_y.append(t_Y[i].tolist())
-            else:
-                count_invalid += 1
+            for th in threads:
+                th.join()
 
         t_Y = test1_y
+        count_invalid += (totall - len(test1_y))
+        total += totall
         if not is_continuous:
             temp_test_y = []
             temp_result_y = []
