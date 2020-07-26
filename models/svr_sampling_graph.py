@@ -39,9 +39,9 @@ def svr_sampling_graph(train, test, adjacency_matrix, rate=0.5, seq_len=12, samp
         a_Y = np.array(final_y)
 
         if repeat == False:
-            model = MultiOutputRegressor(SVR(kernel='rbf'))
+            model = MultiOutputRegressor(SVR(kernel='rbf', max_iter=1000))
         else:
-            model = SVR(kernel='rbf')
+            model = SVR(kernel='rbf', max_iter=1000)
         model = model.fit(a_X, a_Y)
 
         t_X = np.array(t_X)

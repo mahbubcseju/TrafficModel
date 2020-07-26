@@ -9,7 +9,7 @@ from utils import preprocess_data_config, evaluation
 def model_output(data, prelen, p, d, q):
     try:
         model = ARIMA(data, order=[p, d, q])
-        trained_model = model.fit(disp=-1)
+        trained_model = model.fit(disp=-1, maxiter=100)
         output = trained_model.forecast(prelen)[0]
         print(output)
         if max(abs(output)) >= 1500:

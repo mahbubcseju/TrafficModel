@@ -36,9 +36,9 @@ def svr_sampling(train, test, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, 
         a_Y = np.array(final_y)
 
         if repeat == False:
-            model = MultiOutputRegressor(SVR(kernel='rbf'))
+            model = MultiOutputRegressor(SVR(kernel='rbf', max_iter=1000))
         else:
-            model = SVR(kernel='rbf')
+            model = SVR(kernel='rbf', max_iter=1000)
         model = model.fit(a_X, a_Y)
 
         t_X = np.array(t_X)
