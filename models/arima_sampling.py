@@ -11,7 +11,6 @@ def model_output(data, prelen, p, d, q):
         model = ARIMA(data, order=[p, d, q])
         trained_model = model.fit(disp=-1, maxiter=100)
         output = trained_model.forecast(prelen)[0]
-        print(output)
         if max(abs(output)) >= 1500:
             return output, 0
         return output, 1

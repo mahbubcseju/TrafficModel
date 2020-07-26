@@ -154,7 +154,7 @@ def run_models_within_threading(cd, tr, tt, sr=1, sl=12, pl=3, rt=False, ic=True
     )
     rst += ans1
 
-
+processes = []
 for sa in sam:
     for se in seq:
         for pr in pre:
@@ -171,11 +171,17 @@ for sa in sam:
                     is_continuous,
                     result)
             )
-            process.start()
+            processes.append(process)
 
-# final_file = os.path.join(current_directory, 'csvs', 'table.csv')
-# with open(final_file, 'w') as writer:
-#     wr = csv.writer(writer)
-#     wr.writerows(result)
-#
-# print('FINAL COMPLETE')
+for pro in processes:
+    pro.start()
+
+for pro in processes:
+    pro.join()
+
+final_file = os.path.join(current_directory, 'csvs', 'table.csv')
+with open(final_file, 'w') as writer:
+    wr = csv.writer(writer)
+    wr.writerows(result)
+
+print('FINAL COMPLETE')

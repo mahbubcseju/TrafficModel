@@ -22,9 +22,9 @@ def svr_sampling(train, test, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, 
         a_X = np.reshape(a_X, [-1, seq_len])
         a_Y = np.array(a_Y)
 
-        if repeat:
-            a_Y = a_Y[:, 0]
-            a_Y = a_Y.flatten()
+
+        a_Y = a_Y[:, pre_len - 1]
+        a_Y = a_Y.flatten()
 
         final_x, final_y = [], []
         for i in range(len(a_X)):
@@ -35,16 +35,15 @@ def svr_sampling(train, test, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, 
         a_X = np.array(final_x)
         a_Y = np.array(final_y)
 
-        if repeat == False:
-            model = MultiOutputRegressor(SVR(kernel='rbf', max_iter=1000))
-        else:
-            model = SVR(kernel='rbf', max_iter=1000)
+        model = SVR(kernel='rbf', max_iter=1000)
         model = model.fit(a_X, a_Y)
 
         t_X = np.array(t_X)
         t_X = np.reshape(t_X, [-1, seq_len])
         t_Y = np.array(t_Y)
         t_Y = np.reshape(t_Y, [-1, pre_len])
+        t_Y = t_Y[:, pre_len - 1]
+        t_Y = t_Y.flatten()
 
         result_y = []
         test1_y = []
@@ -54,35 +53,12 @@ def svr_sampling(train, test, rate=0.5, seq_len=12, sampling_rate=2, pre_len=3, 
             if np.sum(a) == 0:
                 continue
 
-            test1_y.append(t_Y[i].tolist())
-            if repeat:
-                prediction = model.predict([a])
-                temp_result = [prediction[0] for i in range(pre_len)]
-                result_y.append(temp_result)
-            else:
-                temp_result = model.predict([a])
-
-                # for nxt in range(pre_len):
-                #     prediction = model.predict([a])
-                #     temp_result.append(prediction[0])
-                #     a = np.append(a, prediction[0])
-                #     a = a[1:]
-                result_y.append(temp_result[0])
+            test1_y.append(t_Y[i])
+            temp_result = model.predict([a])
+            result_y.append(temp_result[0])
 
         t_Y = test1_y
-        if not is_continuous:
-            temp_test_y = []
-            temp_result_y = []
-            for i in range(len(t_Y)):
-                temp_test_y.append(t_Y[i][pre_len - 1])
-                temp_result_y.append(result_y[i][pre_len - 1])
-            t_Y = temp_test_y
-            result_y = temp_result_y
-
         total_test_Y.append(t_Y)
         total_predict_Y.append(result_y)
-
-    # test1 = np.reshape(np.array(total_test_Y), [num_nodes, -1])
-    # result1 = np.reshape(np.array(total_predict_Y), [num_nodes, -1])
 
     return header, total_test_Y, total_predict_Y
