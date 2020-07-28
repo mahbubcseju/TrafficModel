@@ -32,12 +32,13 @@ for file in files:
     para = ext[0].split("-")[1:6:2]
     para = list(map(int, para))
     para[1], para[2] = (para[1] * para[0])//2, (para[2] * para[0]) //2
+    fir = "{}min".format(para[0]/2)
     last = [el.replace("\n", "")for el in last.split(",")[2:]]
 
     method = ['HA', 'SVR', 'SVR_GRAPH', 'ARIMA']
     cnt = 0
     for k in range(0, 16, 4):
-        ans = [para[0], para[1], para[2], method[cnt], last[k], last[k +1], last[k +2], last[k + 3]]
+        ans = [fir, "{}min".format(para[1]), "{}min".format(para[2]), method[cnt], last[k], last[k +1], last[k +2], last[k + 3]]
         cnt += 1
         table.append(ans)
 

@@ -38,6 +38,9 @@ for file in files:
         para = ext[0].split("-")[1:6:2]
         para = list(map(int, para))
         para[1], para[2] = (para[1] * para[0])//2, (para[2] * para[0]) //2
+        para[0] = "{}min".format(para[0] / 2)
+        para[1] = "{}min".format(para[1])
+        para[2] = "{}min".format(para[2])
         last = [el.replace("\n", "")for el in last.split(",")[2:]]
 
         for k in last:
