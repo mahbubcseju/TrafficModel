@@ -14,45 +14,21 @@ config = {
         },
         'set2': {
             'start_date': '17_11_2019',
-            'end_date': '21_11_2019',
+            'end_date': '20_11_2019',
             # 'start_time': '06_00_01',
             # 'end_time': '23_59_31',
-        },
-        'set3': {
-            'start_date': '24_11_2019',
-            'end_date': '28_11_2019',
-            # 'start_time': '06_00_01',
-            # 'end_time': '23_59_31',
-        },
+        }
     },
     'test': {
         'set0': {
-            'start_date': '01_11_2019',
-            'end_date': '02_11_2019',
+            'start_date': '21_11_2019',
+            'end_date': '21_11_2019',
             # 'start_time': '0_34_01',
             # 'end_time': '22_35_01',
         },
         'set1': {
-            'start_date': '08_11_2019',
-            'end_date': '09_11_2019',
-            # 'start_time': '0_34_01',
-            # 'end_time': '22_35_01',
-        },
-        'set2': {
-            'start_date': '15_11_2019',
-            'end_date': '16_11_2019',
-            # 'start_time': '0_34_01',
-            # 'end_time': '22_35_01',
-        },
-        'set3': {
-            'start_date': '22_11_2019',
-            'end_date': '23_11_2019',
-            # 'start_time': '0_34_01',
-            # 'end_time': '22_35_01',
-        },
-        'set4': {
-            'start_date': '29_11_2019',
-            'end_date': '30_11_2019',
+            'start_date': '24_11_2019',
+            'end_date': '28_11_2019',
             # 'start_time': '0_34_01',
             # 'end_time': '22_35_01',
         }
