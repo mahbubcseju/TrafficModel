@@ -101,7 +101,7 @@ def run_models(base_directory, train_nt, test_nt, sampling_rate=2, seq_len=60, p
     for row  in  result:
         final_result.append(row)
 
-    file_name = 'Days-end-sam-{}-seq-{}-pre-{}-repeat-{}-is-continous-{}.csv'.format(
+    file_name = 'Days-20-end-10-sam-{}-seq-{}-pre-{}-repeat-{}-is-continous-{}.csv'.format(
         sampling_rate,
         seq_len,
         pre_len,

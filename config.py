@@ -12,13 +12,13 @@ config = {
             # 'start_time': '06_00_01',
             # 'end_time': '23_59_31',
         },
-        'set3': {
+        'set2': {
             'start_date': '17_11_2019',
             'end_date': '21_11_2019',
             # 'start_time': '06_00_01',
             # 'end_time': '23_59_31',
         },
-        'set4': {
+        'set3': {
             'start_date': '24_11_2019',
             'end_date': '28_11_2019',
             # 'start_time': '06_00_01',
