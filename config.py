@@ -27,14 +27,8 @@ config = {
     },
     'test': {
         'set0': {
-            'start_date': '23_11_2019',
-            'end_date': '23_11_2019',
-            # 'start_time': '0_34_01',
-            # 'end_time': '22_35_01',
-        },
-        'set1': {
-            'start_date': '29_11_2019',
-            'end_date': '30_11_2019',
+            'start_date': '24_11_2019',
+            'end_date': '26_11_2019',
             # 'start_time': '0_34_01',
             # 'end_time': '22_35_01',
         }
