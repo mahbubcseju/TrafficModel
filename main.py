@@ -138,6 +138,11 @@ sam = [1]
 seq = [45]
 pre = [5]
 # pre = [5, 15, 30, 45, 60]
+sample = [
+    [1, 45, 5],
+    [1, 60, 5],
+    [1, 30, 5],
+]
 
 import multiprocessing
 
@@ -155,23 +160,25 @@ def run_models_within_threading(cd, tr, tt, sr=1, sl=12, pl=3, rt=False, ic=True
     rst += ans1
 
 processes = []
-for sa in sam:
-    for se in seq:
-        for pr in pre:
-            process = multiprocessing.Process(
-                target=run_models_within_threading,
-                args=(
-                    current_directory,
-                    train,
-                    test,
-                    sa,
-                    (se * 2)//sa,
-                    (pr * 2)//sa,
-                    repeat,
-                    is_continuous,
-                    result)
-            )
-            processes.append(process)
+# for sa in sam:
+#     for se in seq:
+#         for pr in pre:
+
+for (sa, se, pr) in sample:
+    process = multiprocessing.Process(
+        target=run_models_within_threading,
+        args=(
+            current_directory,
+            train,
+            test,
+            sa,
+            (se * 2)//sa,
+            (pr * 2)//sa,
+            repeat,
+            is_continuous,
+            result)
+    )
+    processes.append(process)
 
 for pro in processes:
     pro.start()
