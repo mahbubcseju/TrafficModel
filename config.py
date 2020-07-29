@@ -38,19 +38,19 @@ config = {
             # 'start_time': '0_34_01',
             # 'end_time': '22_35_01',
         },
-        'set1': {
+        'set2': {
             'start_date': '15_11_2019',
             'end_date': '16_11_2019',
             # 'start_time': '0_34_01',
             # 'end_time': '22_35_01',
         },
-        'set2': {
+        'set3': {
             'start_date': '22_11_2019',
             'end_date': '23_11_2019',
             # 'start_time': '0_34_01',
             # 'end_time': '22_35_01',
         },
-        'set2': {
+        'set4': {
             'start_date': '29_11_2019',
             'end_date': '30_11_2019',
             # 'start_time': '0_34_01',
