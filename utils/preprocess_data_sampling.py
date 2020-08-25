@@ -74,14 +74,23 @@ def preprocess_data_config(data_set_gen, seq_len=12, sampling_rate=2, pre_len=3)
         time_len = np_data.shape[0]
         per_seq_covered_length = (seq_len + pre_len - 1) * (sampling_rate - 1) + seq_len + pre_len
         for i in range(0, time_len - per_seq_covered_length):
-            data_x.append([np_data[j] for j in range(i, i + seq_len * sampling_rate, sampling_rate)])
-            data_y.append(
-                [
-                    np_data[j] for j in range(
-                        i + seq_len * sampling_rate, i + (seq_len + pre_len) * sampling_rate, sampling_rate
-                    )
-                ]
-            )
+
+            data_x.append([
+                (
+                    np_data[max(0, (j - sampling_rate + 1)): (j + 1)].sum(axis=0)
+                    / (j + 1 - max(0, (j - sampling_rate + 1)))
+                )
+                for j in range(i, i + seq_len * sampling_rate, sampling_rate)
+            ])
+            data_y.append([
+                (
+                    np_data[max(0, (j - sampling_rate + 1)): (j + 1)].sum(axis=0)
+                    / (j + 1 - max(0, (j - sampling_rate + 1)))
+                )
+                for j in range(
+                    i + seq_len * sampling_rate, i + (seq_len + pre_len) * sampling_rate, sampling_rate
+                )
+            ])
     return np.array(data_x), np.array(data_y), header
 
 

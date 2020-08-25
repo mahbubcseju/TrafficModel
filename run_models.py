@@ -118,4 +118,5 @@ def run_models(base_directory, train_nt, test_nt, sampling_rate=2, seq_len=60, p
     print("Ha Takes: ", be_svr - be_ha)
     print("SVR takes: ", be_svr_gr - be_svr)
     print("SVR_Graph Takes", be_arima - be_svr_gr)
+    print("Arima Time", af_arima - be_arima)
     return ans

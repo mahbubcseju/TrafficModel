@@ -136,11 +136,11 @@ result = [['Sampling Rate', 'Sequence length', 'Predicted length', "", 'RMSE', '
 # sam = [1, 2, 10]
 sam = [1]
 seq = [45]
-pre = [5]
+pre = [5, 15, 30]
 # pre = [5, 15, 30, 45, 60]
 sample = [
-    [2,60, 5],
-    [2, 60,15]
+    [1, 45, 5],
+    [2, 60, 5]
 ]
 
 import multiprocessing
