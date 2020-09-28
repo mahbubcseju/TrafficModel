@@ -13,9 +13,7 @@ file = convert_image_to_csv(current_directory, '13-11-19_mirpur', _range, 'mirpu
 file_for_regression = make_csv_for_regression(
     current_directory,
     file,
-    'updated_IntersectionsWithIncomingOutgoing_Mirpur.csv',
-    [4],
-    True,
+    [3, 4],
 )
 
 print(file_for_regression)
