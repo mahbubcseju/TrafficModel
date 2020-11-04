@@ -93,7 +93,7 @@ for train1 in train_generator():
 if intermediate_file_save:
     save_intermediate_file(current_directory, train, 'train')
 
-
+exit()
 for test1 in test_generator():
     test_data = process_data_for_regression(
         df_to_list(test1),

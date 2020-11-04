@@ -10,48 +10,38 @@ def make_expected_file(roads, images, continuous_list=[4], is_continuous=True, i
         header.append(images[0][j])
     final.append(header)
 
-    road_intersection_index = {}
-
-    for j in range(1, len(roads)):
-        if int(roads[j][0]) == 1:
-            continue
-        road_intersection_index[roads[j][3].replace(' ', '').lower()] = int(roads[j][1])
-        if roads[j][1] != roads[j-1][1]:
-            final.append([roads[j][2]])
-            for i in range(len(images[0])):
-                final[int(roads[j][1])].append(0)
-
-    cur_intersection = -1
-
+    road_cnt = 0
     for ind in range(len(images)):
         row = images[ind]
         if len(row[0]) > 20:
             pros_road = row[0].replace(' ', '').lower()
-            if pros_road in road_intersection_index:
-                cur_intersection = road_intersection_index[
-                    pros_road
-                ]
-                if is_continuous:
-                    for j in range(1, len(row)):
-                        cnt, ignore = 0, 0
-                        for ind1 in range(ind + 1, len(images)):
-                            if len(images[ind1][0]) > 20:
-                                break
-                            if int(images[ind1][j]) in continuous_list:
-                                cnt += 1
-                                ignore = 0
-                            else:
-                                ignore += 1
-                            if ignore == ignored_pixel:
-                                cnt = 0
-                                ignore = 0
-                        final[cur_intersection][j] += cnt
-            else:
-                cur_intersection = -1
-        elif cur_intersection != -1 and not is_continuous:
+            road_cnt += 1
+            temp = [pros_road]
+            for j in range(1, len(row)):
+                temp.append(0)
+            final.append(temp)
+
+            if is_continuous:
+                for j in range(1, len(row)):
+                    cnt1, ignore, last = 0, 0, 0
+                    for ind1 in range(ind + 1, len(images)):
+                        if len(images[ind1][0]) > 20:
+                            break
+                        if int(images[ind1][j]) in continuous_list:
+                            cnt1 += 1
+                            ignore = 0
+                        else:
+                            ignore += 1
+                        if ignore == ignored_pixel:
+                            last = cnt1
+                            cnt1 = 0
+                            ignore = 0
+                    final[road_cnt][j] += max(last, cnt1)
+
+        elif not is_continuous:
             for j in range(1, len(row)):
                 if int(row[j]) in continuous_list:
-                    final[cur_intersection][j] += 1
+                    final[road_cnt][j] += 1
 
     return final
 

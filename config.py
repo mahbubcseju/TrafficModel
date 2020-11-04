@@ -2,7 +2,7 @@ config = {
     'train': {
         'set0': {
             'start_date': '01_11_2019',
-            'end_date': '01_11_2019',
+            'end_date': '30_11_2019',
             # 'start_time': '06_00_01',
             # 'end_time': '23_59_31',
         },
@@ -36,10 +36,10 @@ config = {
     'intensity_list_to_count': [3, 4],
     'is_intensity_continuous': True,
     'number_of_ignored_cell': 3,
-    'intermediate_file_save': False,
+    'intermediate_file_save': True,
     'sampling_rate': 2,
     'seq_len': 60,
     'pre_len': 5,
     'repeat': False,
-    'is_continuous': False,
+    'is_continuous': True,
 }
