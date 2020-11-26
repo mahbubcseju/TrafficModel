@@ -25,7 +25,7 @@ def run_models(base_directory, train_nt, test_nt, sampling_rate=2, seq_len=60, p
 
     # train, test = np.array(train).T, np.array(test).T
     train = [np.array(data).T for data in train_nt]
-    test = [ np.array(data).T for data in test_nt]
+    test = [np.array(data).T for data in test_nt]
 
     be_ha = time.time()
     ha_header, ha_test, ha_result = ha_sampling(train, test, seq_len=seq_len, pre_len=pre_len, repeat=repeat, is_continuous=is_continuous, sampling_rate=sampling_rate)
