@@ -110,6 +110,83 @@ def svr_graph(train, test, sequence_length, prediction_length):
     return header, total_test_Y, total_predict_Y
 
 
+def svr_graph_graph(train, test, sequence_length=None,prediction_length= None):
+    header = train.columns
+    train_x, train_y = preprocess_data(train, sequence_length=sequence_length, prediction_length=prediction_length)
+    test_x, test_y = preprocess_data(test, sequence_length=sequence_length, prediction_length=prediction_length)
+
+    def get_adjacent(i, headers):
+        end_node = headers[i].split('-')[-1]
+        return [j for j in range(len(headers)) if headers[j].split('-')[-1] == end_node]
+
+    num_nodes = len(header)
+    total_test_Y, total_predict_Y = [], []
+    for i in range(num_nodes):
+        adjacent = get_adjacent(i, header)
+        total_adjacent = len(adjacent)
+        a_X, a_Y = train_x[:, :, adjacent], train_y[:, :, [i]]
+        t_X, t_Y = test_x[:, :, adjacent], test_y[:, :, [i]]
+
+        a_X = np.array(a_X)
+        a_X = np.reshape(a_X, [-1, sequence_length * total_adjacent])
+        a_Y = np.array(a_Y)
+        a_Y = a_Y[:, 0]
+        a_Y = a_Y.flatten()
+
+        final_x, final_y = [], []
+        for i in range(len(a_X)):
+            if np.sum(a_X[i]) == 0:
+                continue
+            final_x.append(a_X[i])
+            final_y.append(a_Y[i])
+        a_X = np.array(final_x)
+        a_Y = np.array(final_y)
+        try:
+
+            result_y = []
+            test1_y = []
+
+            model = SVR(kernel='rbf')
+            model = model.fit(a_X, a_Y)
+
+            t_X = np.array(t_X)
+            t_X = np.reshape(t_X, [-1, sequence_length * total_adjacent])
+            t_Y = np.array(t_Y)
+            t_Y = np.reshape(t_Y, [-1, prediction_length])
+
+            for i in range(len(t_X)):
+                a = np.array(t_X[i])
+                if np.sum(a) == 0:
+                    continue
+                test1_y.append(t_Y[i].tolist())
+                temp_result = []
+                for nxt in range(prediction_length):
+                    prediction = model.predict([a])
+                    temp_result.append(prediction[0])
+                    a = np.append(a, prediction[0])
+                    a = a[1:]
+                result_y.append(temp_result)
+        except Exception as e:
+            print(e)
+
+        t_Y = test1_y
+        temp_test_y = []
+        temp_result_y = []
+        for i in range(len(t_Y)):
+            temp_test_y.append(t_Y[i][prediction_length - 1])
+            temp_result_y.append(result_y[i][prediction_length - 1])
+        t_Y = temp_test_y
+        result_y = temp_result_y
+
+        total_test_Y.append(t_Y)
+        total_predict_Y.append(result_y)
+
+        # test1 = np.reshape(np.array(total_test_Y), [num_nodes, -1])
+        # result1 = np.reshape(np.array(total_predict_Y), [num_nodes, -1])
+
+    return header, total_test_Y, total_predict_Y
+
+
 def model_output(data, prelen, p, d, q):
     try:
         model = ARIMA(data, order=[p, d, q])

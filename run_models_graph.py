@@ -11,15 +11,16 @@ from utils import save_intermediate_file
 from utils import preprocess_data
 from utils import process_per_segment
 
-from models import ha_graph, svr_graph, arima_graph
+from models import ha_graph, svr_graph, arima_graph, svr_graph_graph
 
 current_directory = os.getcwd()
 base_directory = current_directory
 
+sampling_rate = '5T'
 dataset = 'new_road.csv'
 method = 'mean'
-sequence_length = 15
-prediction_length = 3
+sequence_length = 12
+prediction_length = 9
 
 data_path = os.path.join(current_directory, 'csvs', dataset)
 
@@ -31,13 +32,13 @@ df.index = pd.to_datetime(df.index, format='%d_%m_%Y %H_%M_%S')
 
 
 if method == 'mean':
-    data = df.resample('5T').mean().dropna()
+    data = df.resample(sampling_rate).mean().dropna()
 elif method == 'max':
-    data = df.resample('5T').max().dropna()
+    data = df.resample(sampling_rate).max().dropna()
 elif method == 'min':
-    data = df.resample('5T').min().dropna()
+    data = df.resample(sampling_rate).min().dropna()
 else:
-    data = df.resample('5T').median.dropna()
+    data = df.resample(sampling_rate).median.dropna()
 
 train = data.loc[:'2019-11-20 23:59:31']
 test = data.loc['2019-11-21 06:00:00':]
@@ -80,9 +81,20 @@ for i in svr_temp_result[-1]:
 ans.append(svr_avg)
 
 print('SVR Complete')
+# adjacent_path = os.path.join('csvs', 'adjacencyMatrixUpdated.csv')
+# adjacency_matrix = pd.read_csv(adjacent_path, index_col=0)
 
+be_graph = time.time()
+svr_graph_header, svr_graph_test, svr_graph_result = svr_graph_graph(train, test, sequence_length=sequence_length, prediction_length=prediction_length)
+svr_tempg_result = process_per_segment('SVR', svr_graph_test, svr_graph_result)
+result = np.concatenate([result, svr_tempg_result], axis=1)
 
+svr_avg = ['SVR']
+for i in svr_tempg_result[-1]:
+    svr_avg.append(i)
+ans.append(svr_avg)
 
+print('SVR_GRAPH Complete')
 
 be_arima = time.time()
 arima_header, arima_test, arima_result, count_invalid, total = arima_graph(train, test,sequence_length=sequence_length, prediction_length=prediction_length, p=1, d=0, q=0)
@@ -108,7 +120,8 @@ with open(image_data_csv_file, 'w') as writer:
 
 print('FINAL COMPLETE')
 print("Ha Takes: ", be_svr - be_ha)
-print("SVR_Graph Takes", be_arima - be_svr)
+print("Graph Takes", be_graph - be_svr)
+print("SVR_Graph Takes", be_arima - be_graph)
 print("Arima takes", af_arima - be_arima)
 
 print(ans)
