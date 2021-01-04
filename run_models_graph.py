@@ -9,8 +9,7 @@ from make_csv_for_regression import process_data_for_regression
 from utils.df_to_list import df_to_list, csv_to_list
 from utils import save_intermediate_file
 from utils import preprocess_data
-from utils import process_per_segment
-
+from utils import process_per_segment, write_results
 from models import ha_graph, svr_graph, arima_graph, svr_graph_graph
 
 current_directory = os.getcwd()
@@ -40,38 +39,42 @@ elif method == 'min':
 else:
     data = df.resample(sampling_rate).median.dropna()
 
-train = data.loc[:'2019-11-20 23:59:31']
-test = data.loc['2019-11-21 06:00:00':]
 
+train = data.loc[:'2019-11-15 23:59:31']
+test = data.loc['2019-11-24 06:00:00':]
+
+
+predicted_time_stamp = test.index[sequence_length + prediction_length:]
 
 headers = train.columns
 
 # ha(data, pre_len=1, repeat=False, is_continuous=True)
-result = [['', ''],['Node Number', 'Node name']]
+path = os.path.join(current_directory, 'csvs')
+result = [['', ''], ['Node Number', 'Node name']]
 ans = []
 
 
 be_ha = time.time()
 ha_header, ha_test, ha_result = ha_graph(train, test, sequence_length=sequence_length, prediction_length=prediction_length)
-print(len(ha_header))
+write_results(predicted_time_stamp, ha_header, ha_test, ha_result,  f'{path}/HA_{5 * prediction_length}.csv')
+
 for i in range(len(ha_header)):
     result.append([i, ha_header[i]])
 result.append(['Average', ''])
 result = np.array(result)
 
-print(len(result))
 ha_temp_result = process_per_segment('HA', ha_test, ha_result)
-print(len(ha_temp_result))
 result = np.concatenate([result, ha_temp_result], axis=1)
 ha_avg = ['HA']
 for i in ha_temp_result[-1]:
     ha_avg.append(i)
 ans.append(ha_avg)
-
 print('HA Complete')
 
 be_svr = time.time()
 svr_header, svr_test, svr_result = svr_graph(train, test, sequence_length=sequence_length, prediction_length=prediction_length)
+write_results(predicted_time_stamp, svr_header, svr_test, svr_result,  f'{path}/SVR_{5 * prediction_length}.csv')
+
 svr_temp_result = process_per_segment('SVR', svr_test, svr_result)
 result = np.concatenate([result, svr_temp_result], axis=1)
 
@@ -86,6 +89,7 @@ print('SVR Complete')
 
 be_graph = time.time()
 svr_graph_header, svr_graph_test, svr_graph_result = svr_graph_graph(train, test, sequence_length=sequence_length, prediction_length=prediction_length)
+write_results(predicted_time_stamp, svr_graph_header, svr_graph_test, svr_graph_result,  f'{path}/SVR_GRAPH_{5 * prediction_length}.csv')
 svr_tempg_result = process_per_segment('SVR', svr_graph_test, svr_graph_result)
 result = np.concatenate([result, svr_tempg_result], axis=1)
 
@@ -93,14 +97,14 @@ svr_avg = ['SVR']
 for i in svr_tempg_result[-1]:
     svr_avg.append(i)
 ans.append(svr_avg)
-
 print('SVR_GRAPH Complete')
 
 be_arima = time.time()
 arima_header, arima_test, arima_result, count_invalid, total = arima_graph(train, test,sequence_length=sequence_length, prediction_length=prediction_length, p=1, d=0, q=0)
+write_results(predicted_time_stamp, arima_header, arima_test, arima_result,  f'{path}/ARIMA_{5 * prediction_length}.csv')
 arima_temp_result = process_per_segment('ARIMA', arima_test, arima_result)
 result = np.concatenate([result, arima_temp_result], axis=1)
-_avg = [ 'ARIMA']
+_avg = ['ARIMA']
 for i in arima_temp_result[-1]:
     _avg.append(i)
 _avg.append(str(count_invalid) + "/" + str(total))

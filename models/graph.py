@@ -71,17 +71,22 @@ def svr_graph(train, test, sequence_length, prediction_length):
 
             model = SVR(kernel='rbf')
             model = model.fit(a_X, a_Y)
+        except Exception as e:
+            print(e)
 
-            t_X = np.array(t_X)
-            t_X = np.reshape(t_X, [-1, sequence_length])
-            t_Y = np.array(t_Y)
-            t_Y = np.reshape(t_Y, [-1, prediction_length])
+        t_X = np.array(t_X)
+        t_X = np.reshape(t_X, [-1, sequence_length])
+        t_Y = np.array(t_Y)
+        t_Y = np.reshape(t_Y, [-1, prediction_length])
 
-            for i in range(len(t_X)):
-                a = np.array(t_X[i])
-                if np.sum(a) == 0:
-                    continue
-                test1_y.append(t_Y[i].tolist())
+        for i in range(len(t_X)):
+            a = np.array(t_X[i])
+            test1_y.append(t_Y[i].tolist())
+
+            if np.sum(a) == 0:
+                result_y.append([0] * prediction_length)
+                continue
+            try:
                 temp_result = []
                 for nxt in range(prediction_length):
                     prediction = model.predict([a])
@@ -89,8 +94,9 @@ def svr_graph(train, test, sequence_length, prediction_length):
                     a = np.append(a, prediction[0])
                     a = a[1:]
                 result_y.append(temp_result)
-        except Exception as e:
-            print(e)
+            except Exception as e:
+                result_y.append([0] * prediction_length)
+
 
         t_Y = test1_y
         temp_test_y = []
@@ -153,12 +159,16 @@ def svr_graph_graph(train, test, sequence_length=None,prediction_length= None):
             t_X = np.reshape(t_X, [-1, sequence_length * total_adjacent])
             t_Y = np.array(t_Y)
             t_Y = np.reshape(t_Y, [-1, prediction_length])
+        except Exception as e:
+            print(e)
 
-            for i in range(len(t_X)):
-                a = np.array(t_X[i])
-                if np.sum(a) == 0:
-                    continue
-                test1_y.append(t_Y[i].tolist())
+        for i in range(len(t_X)):
+            a = np.array(t_X[i])
+            test1_y.append(t_Y[i].tolist())
+            if np.sum(a) == 0:
+                result_y.append([0] * prediction_length)
+                continue
+            try:
                 temp_result = []
                 for nxt in range(prediction_length):
                     prediction = model.predict([a])
@@ -166,8 +176,9 @@ def svr_graph_graph(train, test, sequence_length=None,prediction_length= None):
                     a = np.append(a, prediction[0])
                     a = a[1:]
                 result_y.append(temp_result)
-        except Exception as e:
-            print(e)
+            except Exception as e:
+                result_y.append([0] * prediction_length)
+
 
         t_Y = test1_y
         temp_test_y = []
@@ -199,7 +210,7 @@ def model_output(data, prelen, p, d, q):
         return [0] * prelen, 0
 
 
-def arima_graph(train, test, sequence_length, prediction_length, p=1, d= 0, q= 0):
+def arima_graph(train, test, sequence_length, prediction_length, p=1, d=0, q=0):
     header = train.columns
     train_x, train_y = preprocess_data(train, sequence_length=sequence_length, prediction_length=prediction_length)
     test_x, test_y = preprocess_data(test, sequence_length=sequence_length, prediction_length=prediction_length)
@@ -220,7 +231,9 @@ def arima_graph(train, test, sequence_length, prediction_length, p=1, d= 0, q= 0
         test1_y = []
         for i in range(len(t_X)):
             a = np.array(t_X[i])
+            test1_y.append(t_Y[i].tolist())
             if np.sum(a) == 0:
+                result_y.append([0] * prediction_length)
                 continue
 
             temp_result, is_valid = model_output(a, prediction_length, p, d, q)
@@ -228,8 +241,8 @@ def arima_graph(train, test, sequence_length, prediction_length, p=1, d= 0, q= 0
             total += 1
             if is_valid:
                 result_y.append(temp_result)
-                test1_y.append(t_Y[i].tolist())
             else:
+                result_y.append(t_Y[i].toList())
                 count_invalid += 1
 
         t_Y = test1_y
