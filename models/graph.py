@@ -242,7 +242,7 @@ def arima_graph(train, test, sequence_length, prediction_length, p=1, d=0, q=0):
             if is_valid:
                 result_y.append(temp_result)
             else:
-                result_y.append(t_Y[i].toList())
+                result_y.append(t_Y[i].tolist())
                 count_invalid += 1
 
         t_Y = test1_y
